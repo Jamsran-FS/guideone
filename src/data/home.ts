@@ -168,6 +168,27 @@ export const servicesCopy = {
     ko: "언어를 넘어, 한국으로 향하는 여정을 위해",
   } as L,
   comingSoon: { mn: "Дэлгэрэнгүй удахгүй", en: "Details coming soon", ko: "세부 내용 곧 공개" } as L,
+  soon: { mn: "Тун удахгүй", en: "Coming soon", ko: "곧 오픈" } as L,
+  text: {
+    mn: "Солонгостой холбоотой таны хэрэгцээнд зориулсан үйлчилгээнүүд.",
+    en: "Services for everything you need on your way to Korea.",
+    ko: "한국과 관련된 필요를 위한 서비스.",
+  } as L,
+  studyShort: {
+    mn: "Солонгос дахь хамтрагч сургуулиуд руу суралцагчдыг зуучилж, сургууль, хөтөлбөр сонгоход тусална.",
+    en: "We place students at our partner schools in Korea and help you choose a school and program.",
+    ko: "한국 협력 학교로 유학을 연결하고 학교·프로그램 선택을 돕습니다.",
+  } as L,
+  course: {
+    title: { mn: "Хэлний сургалт", en: "Korean courses", ko: "한국어 강좌" } as L,
+    description: {
+      mn: "Анхан шатнаас TOPIK бэлтгэл хүртэлх Солонгос хэлний сургалт.",
+      en: "Korean courses from beginner level to TOPIK preparation.",
+      ko: "초급부터 TOPIK 대비까지의 한국어 강좌.",
+    } as L,
+    cta: { mn: "Сургалт үзэх", en: "View courses", ko: "강좌 보기" } as L,
+  },
+  soonTitle: { mn: "Удахгүй нэмэгдэх үйлчилгээ", en: "More services coming soon", ko: "곧 추가될 서비스" } as L,
 };
 
 export const partnersCopy = {

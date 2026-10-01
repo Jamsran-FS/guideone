@@ -2,6 +2,7 @@ import {
   BookOpen,
   GraduationCap,
   Languages,
+  Luggage,
   MessagesSquare,
   Plane,
   Smartphone,
@@ -9,7 +10,7 @@ import {
 } from "lucide-react";
 
 /** data/ файлуудад icon-ыг нэрээр нь (string) хадгалдаг тул энд map хийнэ */
-const map: Record<string, LucideIcon> = { BookOpen, GraduationCap, Languages, MessagesSquare, Plane, Smartphone };
+const map: Record<string, LucideIcon> = { BookOpen, GraduationCap, Languages, Luggage, MessagesSquare, Plane, Smartphone };
 
 export default function Icon({ name, className }: { name: string; className?: string }) {
   const I = map[name] ?? GraduationCap;

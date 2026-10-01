@@ -1,9 +1,10 @@
 import type { ReactNode } from "react";
 
-type Tone = "new" | "accent" | "neutral" | "onDark";
+type Tone = "soon" | "new" | "accent" | "neutral" | "onDark";
 
 const tones: Record<Tone, string> = {
   new: "bg-lime text-primary-dark",
+  soon: "bg-signal/10 text-signal",
   accent: "bg-accent-soft text-accent",
   neutral: "bg-primary-soft text-primary",
   onDark: "bg-white/10 text-white ring-1 ring-inset ring-white/20",

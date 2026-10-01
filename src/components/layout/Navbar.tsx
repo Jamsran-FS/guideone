@@ -164,6 +164,15 @@ function ServicesMenu({ item, lang }: { item: NavLink; lang: Locale }) {
         <ul className="rounded-2xl border border-border bg-surface p-2 shadow-[0_24px_60px_-20px_rgb(10_74_48/0.25)]">
           {item.children!.map((c) => (
             <li key={c.id}>
+              {c.soon ? (
+                <div className="flex items-center gap-4 rounded-xl p-3.5 opacity-60" aria-disabled="true">
+                  <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-background text-muted">
+                    <Icon name={c.icon} className="size-5" />
+                  </span>
+                  <span className="flex-1 text-sm font-semibold text-foreground">{tr(c.label, lang)}</span>
+                  <Badge tone="soon">{tr(c.text, lang)}</Badge>
+                </div>
+              ) : (
               <Link
                 href={localHref(lang, c.href)}
                 onClick={() => setShow(false)}
@@ -181,6 +190,7 @@ function ServicesMenu({ item, lang }: { item: NavLink; lang: Locale }) {
                 </span>
                 <ArrowUpRight className="mt-0.5 size-4 text-muted opacity-0 transition group-hover:opacity-100" aria-hidden />
               </Link>
+              )}
             </li>
           ))}
         </ul>
@@ -243,6 +253,15 @@ function MobileDrawer({ open, onClose, lang }: { open: boolean; onClose: () => v
                     <ul className="overflow-hidden">
                       {item.children.map((c) => (
                         <li key={c.id}>
+                          {c.soon ? (
+                            <div className="mb-2 flex items-center gap-3 rounded-xl bg-background/60 p-3 opacity-60" aria-disabled="true">
+                              <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-surface text-muted ring-1 ring-border">
+                                <Icon name={c.icon} className="size-5" />
+                              </span>
+                              <span className="flex-1 text-[15px] font-semibold text-foreground">{tr(c.label, lang)}</span>
+                              <Badge tone="soon">{tr(c.text, lang)}</Badge>
+                            </div>
+                          ) : (
                           <Link
                             href={localHref(lang, c.href)}
                             onClick={onClose}
@@ -255,6 +274,7 @@ function MobileDrawer({ open, onClose, lang }: { open: boolean; onClose: () => v
                             <span className="flex-1 text-[15px] font-semibold text-foreground">{tr(c.label, lang)}</span>
                             {c.isNew && <Badge tone="new">{tr(ui.newBadge, lang)}</Badge>}
                           </Link>
+                          )}
                         </li>
                       ))}
                     </ul>

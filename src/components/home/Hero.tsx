@@ -60,7 +60,7 @@ export default function Hero({ lang }: { lang: Locale }) {
           </div>
 
           {/* Эх зураг дээрх картын байрлал: x 86–948, y 798–962 (1536×1024) */}
-          <QuickCard lang={lang} className="absolute left-[5.6%] top-[77.9%] h-[16%] w-[56.1%]" />
+          <QuickCard lang={lang} className="absolute bottom-[6%] left-[5.6%] w-[min(50%,760px)]" />
         </div>
       )}
 
@@ -114,23 +114,23 @@ export default function Hero({ lang }: { lang: Locale }) {
 function QuickCard({ lang, className = "" }: { lang: Locale; className?: string }) {
   return (
     <nav aria-label={tr(hero.quickLabel, lang)} className={className}>
-      <ul className="grid h-full grid-cols-2 overflow-hidden rounded-[22px] border border-white/80 bg-white/95 shadow-[0_24px_60px_-28px_rgb(10_74_48/0.45)] backdrop-blur-md sm:grid-cols-4 lg:rounded-[1.4vw]">
+      <ul className="grid h-full grid-cols-2 overflow-hidden rounded-[22px] border border-white/80 bg-white/95 shadow-[0_24px_60px_-28px_rgb(10_74_48/0.45)] backdrop-blur-md sm:grid-cols-4 lg:rounded-2xl">
         {hero.quick.map((q, i) => (
           <li
             key={q.icon}
-            className={`border-border ${i % 2 === 0 ? "border-r" : ""} ${i < 2 ? "border-b sm:border-b-0" : ""} sm:border-r sm:last:border-r-0 lg:my-[1.2vw] lg:border-r-0 lg:[&:not(:last-child)]:border-r`}
+            className={`border-border ${i % 2 === 0 ? "border-r" : ""} ${i < 2 ? "border-b sm:border-b-0" : ""} sm:border-r sm:last:border-r-0 lg:my-4 lg:border-r-0 lg:[&:not(:last-child)]:border-r`}
           >
             <Link
               href={localHref(lang, q.href)}
-              className="group relative flex h-full flex-col items-center justify-center gap-3 px-3 py-6 text-center transition-colors hover:bg-accent-soft/60 lg:gap-[0.8vw] lg:px-[0.8vw] lg:py-0"
+              className="group relative flex h-full flex-col items-center justify-center gap-3 px-3 py-6 text-center transition-colors hover:bg-accent-soft/60 lg:gap-2 lg:px-2 lg:py-1"
             >
               {q.isNew && (
-                <Badge tone="new" className="absolute right-3 top-3 rounded-full px-2 py-0.5 text-[10px] lg:-top-[0.4vw] lg:right-[0.6vw]">
+                <Badge tone="new" className="absolute right-3 top-3 rounded-full px-2 py-0.5 text-[10px] lg:-top-2.5 lg:right-2">
                   {tr(ui.newBadge, lang)}
                 </Badge>
               )}
-              <Icon name={q.icon} className="size-7 text-accent lg:size-[2.2vw]" />
-              <span className="text-[13.5px] font-semibold leading-snug text-foreground lg:text-[clamp(11px,0.9vw,15px)]">
+              <Icon name={q.icon} className="size-7 text-accent lg:size-6" />
+              <span className="text-[13.5px] font-semibold leading-snug text-foreground lg:text-[13px]">
                 {tr(q.label, lang)}
               </span>
             </Link>

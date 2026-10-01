@@ -34,7 +34,7 @@ export const site = {
    */
   heroImage: "/hero/hero-mobile-v2.jpg" as string | null,
   /** Desktop-д бүтэн өргөнөөр харагдах зураг (1536×1024, 3:2). Карт, текст нь зургийн % байрлалаар тавигдана. */
-  heroImageFull: "/hero/hero-full-v2.jpg" as string | null,
+  heroImageFull: "/hero/hero-full-v3.jpg" as string | null,
 
   /** Google Maps-ийн хайлтын утга (embed) */
   mapQuery: "GD Plaza, Ulaanbaatar",
@@ -53,7 +53,7 @@ export type NavLink = {
   label: Localized;
   /** "#about" гэх мэт anchor, эсвэл "/services/..." зам. Хэлний prefix автоматаар нэмэгдэнэ. */
   href: string;
-  children?: { id: string; label: Localized; text: Localized; href: string; icon: string; isNew?: boolean }[];
+  children?: { id: string; label: Localized; text: Localized; href: string; icon: string; isNew?: boolean; soon?: boolean }[];
 };
 
 export const navigation: NavLink[] = [
@@ -86,6 +86,22 @@ export const navigation: NavLink[] = [
         href: "/services/korea-number",
         icon: "Smartphone",
         isNew: true,
+      },
+      {
+        id: "translation",
+        label: { mn: "Баталгаат орчуулга", en: "Certified translation", ko: "공증 번역" },
+        text: { mn: "Тун удахгүй", en: "Coming soon", ko: "곧 오픈" },
+        href: "#services",
+        icon: "Languages",
+        soon: true,
+      },
+      {
+        id: "travel",
+        label: { mn: "Аялал жуулчлал", en: "Travel & tours", ko: "여행" },
+        text: { mn: "Тун удахгүй", en: "Coming soon", ko: "곧 오픈" },
+        href: "#services",
+        icon: "Luggage",
+        soon: true,
       },
     ],
   },

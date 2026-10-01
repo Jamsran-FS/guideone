@@ -89,4 +89,33 @@ export const services: Service[] = [
   },
 ];
 
+/**
+ * "Тун удахгүй" үйлчилгээнүүд — нүүр хуудас болон цэсэнд саарал төлөвтэй харагдана.
+ * Нээгдэх үед `services` жагсаалт руу шилжүүлж, дэлгэрэнгүй мэдээлэл нэмнэ.
+ */
+export type UpcomingService = { slug: string; icon: string; title: Localized; description: Localized };
+
+export const upcomingServices: UpcomingService[] = [
+  {
+    slug: "translation",
+    icon: "Languages",
+    title: { mn: "Баталгаат орчуулга", en: "Certified translation", ko: "공증 번역" },
+    description: {
+      mn: "Суралцах, виз мэдүүлэхэд шаардлагатай бичиг баримтын баталгаат орчуулга.",
+      en: "Certified translation of documents for study and visa applications.",
+      ko: "유학 및 비자 신청에 필요한 서류의 공증 번역.",
+    },
+  },
+  {
+    slug: "travel",
+    icon: "Luggage",
+    title: { mn: "Аялал жуулчлал", en: "Travel & tours", ko: "여행" },
+    description: {
+      mn: "Солонгос руу аялах, танилцах аялалд зориулсан үйлчилгээ.",
+      en: "Services for trips and discovery tours to Korea.",
+      ko: "한국 여행과 탐방을 위한 서비스.",
+    },
+  },
+];
+
 export const getService = (slug: string) => services.find((s) => s.slug === slug);
