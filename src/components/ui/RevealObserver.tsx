@@ -1,16 +1,22 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 /**
  * [data-reveal] элементүүдийг дэлгэцэнд орох үед .is-visible болгоно.
- * Нэг удаа mount хийнэ (layout дотор) — бусад хэсгүүд Server Component хэвээр.
+ * Хуудас солигдох бүрт (pathname) болон DOM-д шинэ элемент нэмэгдэхэд дахин ажиллана —
+ * ингэснээр client navigation-ий дараа контент нуугдаж үлдэхгүй.
  */
 export default function RevealObserver() {
+  const pathname = usePathname();
+
   useEffect(() => {
     const root = document.documentElement;
-    const els = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
-    if (!("IntersectionObserver" in window)) return;
+    if (!("IntersectionObserver" in window)) {
+      root.classList.remove("reveal-ready");
+      return;
+    }
 
     const io = new IntersectionObserver(
       (entries) => {
@@ -24,16 +30,27 @@ export default function RevealObserver() {
       { rootMargin: "0px 0px -8% 0px", threshold: 0.12 },
     );
 
-    // Дэлгэцэнд аль хэдийн байгаа элементүүдийг шууд харуулна (анивчихгүй)
-    const vh = window.innerHeight;
-    for (const el of els) {
-      if (el.getBoundingClientRect().top < vh * 0.92) el.classList.add("is-visible");
-      else io.observe(el);
-    }
+    const scan = () => {
+      const vh = window.innerHeight;
+      document.querySelectorAll<HTMLElement>("[data-reveal]:not(.is-visible)").forEach((el) => {
+        // Дэлгэцэнд байгаа эсвэл дээр нь өнгөрсөн элементийг шууд харуулна
+        if (el.getBoundingClientRect().top < vh * 0.92) el.classList.add("is-visible");
+        else io.observe(el);
+      });
+    };
+
+    scan();
     root.classList.add("reveal-ready");
 
-    return () => io.disconnect();
-  }, []);
+    // Хуудас шилжилтийн дараа/хойно нэмэгдсэн элементүүд
+    const mo = new MutationObserver(() => scan());
+    mo.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      io.disconnect();
+      mo.disconnect();
+    };
+  }, [pathname]);
 
   return null;
 }
