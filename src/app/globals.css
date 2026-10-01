@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+/* ──────────────────────────────────────────────────────────────
+   GuideOne brand tokens — өнгийг зөвхөн энд солиход хангалттай.
+   ────────────────────────────────────────────────────────────── */
+:root {
+  /* Логоны өнгөөс авсан — G1 лого: гүн ногоон → ногоон → шар-ногоон */
+  --primary: #0a4a30; /* гүн ногоон — бараан хэсэг, гарчиг */
+  --primary-dark: #063523;
+  --primary-soft: #e7f3ec;
+  --accent: #0e8444; /* логоны ногоон — товч, холбоос */
+  --accent-strong: #0a6b37;
+  --accent-soft: #e8f6ed;
+  --lime: #8bd14a; /* логоны шар-ногоон — онцлол, ШИНЭ */
+  --sky: #18a058; /* footer gradient */
+  --sky-dark: #0e7d44;
+  --signal: #cd2e3a; /* 태극 red — маш бага хэрэглэнэ */
+  --background: #f5f8f6;
+  --surface: #ffffff;
+  --foreground: #0d1f17;
+  --muted: #56675e;
+  --border: #e0e8e3;
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-soft: var(--primary-soft);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-lime: var(--lime);
+  --color-sky: var(--sky);
+  --color-sky-dark: var(--sky-dark);
+  --color-signal: var(--signal);
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+
+  --font-sans: "Inter Variable", "Noto Sans KR", system-ui, sans-serif;
+  --font-display: "Manrope Variable", "Inter Variable", "Noto Sans KR", system-ui, sans-serif;
+  --font-kr: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+}
+
+body {
+  background: var(--surface);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+:lang(ko) {
+  word-break: keep-all;
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Логоны gradient-тэй текст */
+.text-brand-gradient {
+  background-image: linear-gradient(100deg, #0a6b37 0%, #18a058 50%, #7cc443 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Faint editorial grid */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgb(10 74 48 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(10 74 48 / 0.05) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+.bg-grid-light {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Scroll reveal — RevealObserver нь <html>-д .reveal-ready нэмнэ.
+   JS ажиллахгүй үед контент үргэлж харагдана. */
+.reveal-ready [data-reveal] {
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal-ready [data-reveal]:not(.is-visible) {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+/* Journey line dash animation */
+@keyframes dash-move {
+  to { stroke-dashoffset: -40; }
+}
+.animate-dash { animation: dash-move 2.4s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal-ready [data-reveal] { transition: none; }
+  .reveal-ready [data-reveal]:not(.is-visible) { opacity: 1; transform: none; }
+  .animate-dash { animation: none; }
+}
