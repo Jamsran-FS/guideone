@@ -11,13 +11,13 @@ import TeachersSection from "@/components/home/TeachersSection";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
 import FAQSection from "@/components/home/FAQSection";
 import ContactCTA from "@/components/home/ContactCTA";
-import { faqs } from "@/data/faq";
-import { site } from "@/data/site";
 import { tr } from "@/i18n/config";
+import { getContent } from "@/lib/content";
 
 export default async function HomePage({ params }: PageProps<"/[lang]">) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
+  const { faqs, site } = await getContent();
 
   // Structured data — зөвхөн баталгаажсан мэдээлэл
   const jsonLd = [

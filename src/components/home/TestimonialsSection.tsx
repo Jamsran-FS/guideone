@@ -1,13 +1,13 @@
 import { ArrowRight, Quote } from "lucide-react";
 import { tr, type Locale } from "@/i18n/config";
-import { testimonials } from "@/data/testimonials";
-import { testimonialsCopy } from "@/data/home";
+import { getContent } from "@/lib/content";
 import Button from "../ui/Button";
 import Card from "../ui/Card";
 import Container from "../ui/Container";
 import SectionHeading from "../ui/SectionHeading";
 
-export default function TestimonialsSection({ lang }: { lang: Locale }) {
+export default async function TestimonialsSection({ lang }: { lang: Locale }) {
+  const { testimonials, testimonialsCopy } = await getContent();
   return (
     <section id="testimonials" aria-labelledby="testimonials-title" className="bg-background py-24 lg:py-32">
       <Container>

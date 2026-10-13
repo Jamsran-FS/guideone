@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { tr, type Locale } from "@/i18n/config";
-import { hero, ui } from "@/data/home";
-import { localHref, site } from "@/data/site";
+import { ui } from "@/data/home";
+import { localHref } from "@/data/site";
+import { getContent, type Content } from "@/lib/content";
 import Badge from "../ui/Badge";
 import Icon from "../ui/Icon";
 import RouteOverlay from "./RouteOverlay";
@@ -13,7 +14,8 @@ import RouteOverlay from "./RouteOverlay";
  * % байрлалаар (эх mockup 1536×1024-тэй яг ижил) тавигдана, хэмжээ нь vw-ээр масштаблагдана.
  * Mobile/tablet: текст дээр, зургийн баруун хэсэг доор, карт нь зураг дээр давхарлана.
  */
-export default function Hero({ lang }: { lang: Locale }) {
+export default async function Hero({ lang }: { lang: Locale }) {
+  const { hero, site } = await getContent();
   const btnPrimary =
     "group inline-flex items-center justify-center gap-2 rounded-full bg-accent font-semibold text-white shadow-lg shadow-accent/25 transition-colors hover:bg-accent-strong";
   const btnSecondary =
@@ -60,7 +62,7 @@ export default function Hero({ lang }: { lang: Locale }) {
           </div>
 
           {/* Эх зураг дээрх картын байрлал: x 86–948, y 798–962 (1536×1024) */}
-          <QuickCard lang={lang} className="absolute bottom-[6%] left-[5.6%] w-[min(50%,760px)]" />
+          <QuickCard hero={hero} lang={lang} className="absolute bottom-[6%] left-[5.6%] w-[min(50%,760px)]" />
         </div>
       )}
 
@@ -104,14 +106,14 @@ export default function Hero({ lang }: { lang: Locale }) {
             </div>
           )}
 
-          <QuickCard lang={lang} className="relative z-10 -mt-24 mb-6" />
+          <QuickCard hero={hero} lang={lang} className="relative z-10 -mt-24 mb-6" />
         </div>
       </div>
     </section>
   );
 }
 
-function QuickCard({ lang, className = "" }: { lang: Locale; className?: string }) {
+function QuickCard({ hero, lang, className = "" }: { hero: Content["hero"]; lang: Locale; className?: string }) {
   return (
     <nav aria-label={tr(hero.quickLabel, lang)} className={className}>
       <ul className="grid h-full grid-cols-2 overflow-hidden rounded-[22px] border border-white/80 bg-white/95 shadow-[0_24px_60px_-28px_rgb(10_74_48/0.45)] backdrop-blur-md sm:grid-cols-4 lg:rounded-2xl">

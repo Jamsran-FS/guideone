@@ -1,9 +1,10 @@
 import { tr, type Locale } from "@/i18n/config";
-import { process } from "@/data/home";
+import { getContent } from "@/lib/content";
 import Container from "../ui/Container";
 import SectionHeading from "../ui/SectionHeading";
 
-export default function KoreaStudyProcess({ lang, compact = false }: { lang: Locale; compact?: boolean }) {
+export default async function KoreaStudyProcess({ lang, compact = false }: { lang: Locale; compact?: boolean }) {
+  const { process } = await getContent();
   return (
     <section aria-labelledby="process-title" className={compact ? "py-16" : "bg-background py-24 lg:py-32"}>
       <Container>

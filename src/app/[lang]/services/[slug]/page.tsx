@@ -2,23 +2,27 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Check, Phone } from "lucide-react";
-import { hasLocale, locales, tr } from "@/i18n/config";
-import { getService, services } from "@/data/services";
-import { serviceDetailCopy, ui } from "@/data/home";
-import { site, tel } from "@/data/site";
+import { hasLocale, locales, tr, type Locale } from "@/i18n/config";
+import { ui } from "@/data/home";
+import { tel } from "@/data/site";
+import { getContent, type Content } from "@/lib/content";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 import KoreaStudyProcess from "@/components/home/KoreaStudyProcess";
 
-export const dynamicParams = false;
-export function generateStaticParams() {
+// Админ шинэ үйлчилгээ нэмбэл build-гүйгээр шууд нээгдэнэ
+export const dynamicParams = true;
+export async function generateStaticParams() {
+  const { services } = await getContent();
   return locales.flatMap((lang) => services.map((s) => ({ lang, slug: s.slug })));
 }
 
+const getService = async (slug: string) => (await getContent()).services.find((s) => s.slug === slug);
+
 export async function generateMetadata({ params }: PageProps<"/[lang]/services/[slug]">): Promise<Metadata> {
   const { lang, slug } = await params;
-  const s = getService(slug);
+  const s = await getService(slug);
   if (!hasLocale(lang) || !s) return {};
   return {
     title: tr(s.title, lang),
@@ -33,9 +37,9 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/services/[
 
 export default async function ServicePage({ params }: PageProps<"/[lang]/services/[slug]">) {
   const { lang, slug } = await params;
-  const s = getService(slug);
+  const s = await getService(slug);
   if (!hasLocale(lang) || !s) notFound();
-  const c = serviceDetailCopy;
+  const { serviceDetailCopy: c, site } = await getContent();
   const dark = s.isNew;
 
   return (
@@ -92,7 +96,7 @@ export default async function ServicePage({ params }: PageProps<"/[lang]/service
 
           {!s.details && (
             <aside className="rounded-2xl border border-border bg-background p-8 lg:col-span-4 lg:col-start-9" data-reveal>
-              <ContactBox lang={lang} />
+              <ContactBox lang={lang} copy={c} phone={site.phones[0]} />
             </aside>
           )}
         </Container>
@@ -104,7 +108,7 @@ export default async function ServicePage({ params }: PageProps<"/[lang]/service
         <section className="bg-background py-20">
           <Container>
             <div className="rounded-2xl border border-border bg-surface p-8 sm:p-10" data-reveal>
-              <ContactBox lang={lang} horizontal />
+              <ContactBox lang={lang} copy={c} phone={site.phones[0]} horizontal />
             </div>
           </Container>
         </section>
@@ -113,8 +117,9 @@ export default async function ServicePage({ params }: PageProps<"/[lang]/service
   );
 }
 
-function ContactBox({ lang, horizontal = false }: { lang: "mn" | "en" | "ko"; horizontal?: boolean }) {
-  const c = serviceDetailCopy;
+type ContactBoxProps = { lang: Locale; copy: Content["serviceDetailCopy"]; phone: string; horizontal?: boolean };
+
+function ContactBox({ lang, copy: c, phone, horizontal = false }: ContactBoxProps) {
   return (
     <div className={horizontal ? "flex flex-col justify-between gap-6 md:flex-row md:items-center" : ""}>
       <div>
@@ -122,8 +127,8 @@ function ContactBox({ lang, horizontal = false }: { lang: "mn" | "en" | "ko"; ho
         <p className="mt-2 text-muted">{tr(c.ctaText, lang)}</p>
       </div>
       <div className={`flex flex-wrap gap-3 ${horizontal ? "" : "mt-6"}`}>
-        <Button href={tel(site.phones[0])}>
-          <Phone className="size-4" aria-hidden /> {site.phones[0]}
+        <Button href={tel(phone)}>
+          <Phone className="size-4" aria-hidden /> {phone}
         </Button>
         <Button href={`/${lang}#contact`} variant="secondary">
           {tr(ui.contact, lang)}

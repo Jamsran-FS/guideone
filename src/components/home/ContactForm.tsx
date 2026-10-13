@@ -3,12 +3,12 @@
 import { Check, CheckCircle2, Loader2, Send } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { tr, type Locale } from "@/i18n/config";
-import { contactCopy } from "@/data/home";
+import type { Sections } from "@/data/sections";
 import { submitContact } from "@/lib/contact";
 
 type Status = "idle" | "sending" | "success" | "error";
 
-export default function ContactForm({ lang }: { lang: Locale }) {
+export default function ContactForm({ lang, copy: contactCopy }: { lang: Locale; copy: Sections["contactCopy"] }) {
   const f = contactCopy.form;
   const [status, setStatus] = useState<Status>("idle");
 

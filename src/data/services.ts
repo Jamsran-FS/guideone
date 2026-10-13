@@ -8,8 +8,12 @@ import type { Localized } from "@/i18n/config";
 export type ServiceDetail = { label: Localized; value: Localized | null };
 
 export type Service = {
-  slug: "korea-study" | "korea-number";
+  slug: string;
+  /** components/ui/Icon.tsx доторх icon-ы нэр */
+  icon: string;
   title: Localized;
+  /** Нүүр хуудасны картад харагдах богино тайлбар. Хоосон бол `description` харагдана. */
+  summary?: Localized | null;
   description: Localized;
   /** Дэлгэрэнгүй хуудсанд: зөвлөхөөс асууж болох сэдвүүд (амлалт биш) */
   topics: Localized<string[]>;
@@ -20,7 +24,13 @@ export type Service = {
 export const services: Service[] = [
   {
     slug: "korea-study",
+    icon: "GraduationCap",
     title: { mn: "Солонгост суралцах зуучлал", en: "Study in Korea consulting", ko: "한국 유학 컨설팅" },
+    summary: {
+      mn: "Солонгос дахь хамтрагч сургуулиуд руу суралцагчдыг зуучилж, сургууль, хөтөлбөр сонгоход тусална.",
+      en: "We place students at our partner schools in Korea and help you choose a school and program.",
+      ko: "한국 협력 학교로 유학을 연결하고 학교·프로그램 선택을 돕습니다.",
+    },
     description: {
       mn: "GuideOne нь Солонгос дахь хамтран ажилладаг сургуулиуд руугаа суралцагчдыг зуучилдаг. Сургууль, хөтөлбөр сонголт болон суралцахтай холбоотой дараагийн алхмуудаа тодорхойлоход тань тусална.",
       en: "GuideOne places students at its partner schools in South Korea. We help you choose a school and program and define your next steps.",
@@ -56,6 +66,7 @@ export const services: Service[] = [
   },
   {
     slug: "korea-number",
+    icon: "Smartphone",
     title: { mn: "Солонгост ашиглах дугаар холболт", en: "Korean phone number setup", ko: "한국 휴대폰 번호 개통" },
     description: {
       mn: "Солонгост очихоосоо өмнө холбоотой байхад зориулсан дугаар болон холболтын үйлчилгээ.",
@@ -117,5 +128,3 @@ export const upcomingServices: UpcomingService[] = [
     },
   },
 ];
-
-export const getService = (slug: string) => services.find((s) => s.slug === slug);

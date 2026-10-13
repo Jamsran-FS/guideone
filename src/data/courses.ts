@@ -7,6 +7,8 @@ import type { Localized } from "@/i18n/config";
  * Үнэ одоогоор оруулаагүй — `price` талбар нэмэхэд картад автоматаар гарна.
  */
 export type Course = {
+  /** DB-ийн id (өргөдлийн формд ашиглана) */
+  id?: number;
   slug: string;
   /** Карт дээрх том солонгос тэмдэгт */
   glyph: string;

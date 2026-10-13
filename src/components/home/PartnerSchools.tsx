@@ -1,14 +1,14 @@
 import Image from "next/image";
 import { ArrowRight, ArrowUpRight, School } from "lucide-react";
 import { tr, type Locale } from "@/i18n/config";
-import { partners } from "@/data/partners";
-import { partnersCopy } from "@/data/home";
+import { getContent } from "@/lib/content";
 import Button from "../ui/Button";
 import Container from "../ui/Container";
 import SectionHeading from "../ui/SectionHeading";
 
-/** Солонгос дахь хамтрагч сургуулиуд — data/partners.ts хоосон бол "удахгүй" төлөв */
-export default function PartnerSchools({ lang }: { lang: Locale }) {
+/** Солонгос дахь хамтрагч сургуулиуд — жагсаалт хоосон бол "удахгүй" төлөв */
+export default async function PartnerSchools({ lang }: { lang: Locale }) {
+  const { partners, partnersCopy } = await getContent();
   return (
     <section id="partners" aria-labelledby="partners-title" className="border-t border-border bg-surface py-24 lg:py-28">
       <Container className="grid gap-12 lg:grid-cols-12 lg:gap-10">

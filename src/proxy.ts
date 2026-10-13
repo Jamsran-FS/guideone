@@ -1,5 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { defaultLocale, hasLocale, LOCALE_COOKIE, locales, type Locale } from "./i18n/config";
+import { ACCESS_COOKIE, REFRESH_COOKIE, refreshSession, SESSION_COOKIE_NAMES, sessionCookies } from "./lib/session-cookies";
+
+/** Нэвтэрсэн байх шаардлагатай замууд. Эрхийг (admin/student) хуудас өөрөө шалгана. */
+const PROTECTED = /^\/(admin|teacher|(mn|en|ko)\/account)(\/|$)/;
 
 /** cookie → браузерын хэл (Accept-Language) → монгол */
 function pickLocale(req: NextRequest): Locale {
@@ -18,8 +22,36 @@ function pickLocale(req: NextRequest): Locale {
   return defaultLocale;
 }
 
-export function proxy(req: NextRequest) {
+/** Access token дууссан бол refresh token-оор шинэчилнэ; боломжгүй бол нэвтрэх хуудас руу */
+async function requireSession(req: NextRequest) {
+  if (req.cookies.has(ACCESS_COOKIE)) return NextResponse.next();
+
+  const refreshToken = req.cookies.get(REFRESH_COOKIE)?.value;
+  const session = refreshToken ? await refreshSession(refreshToken) : null;
+
+  if (!session) {
+    const { pathname } = req.nextUrl;
+    const segment = pathname.split("/")[1];
+    const url = req.nextUrl.clone();
+    url.pathname = `/${hasLocale(segment) ? segment : pickLocale(req)}/login`;
+    url.search = `?next=${encodeURIComponent(pathname)}`;
+    const res = NextResponse.redirect(url);
+    for (const name of SESSION_COOKIE_NAMES) res.cookies.delete(name);
+    return res;
+  }
+
+  // Шинэ token-ийг энэ хүсэлтэд (server component-д) болон хөтөч рүү хоёуланд нь өгнө
+  const cookies = sessionCookies(session);
+  for (const c of cookies) req.cookies.set(c.name, c.value);
+  const res = NextResponse.next({ request: { headers: req.headers } });
+  for (const c of cookies) res.cookies.set(c.name, c.value, c.options);
+  return res;
+}
+
+export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
+  if (PROTECTED.test(pathname)) return requireSession(req);
+
   const hasPrefix = locales.some((l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`));
   if (hasPrefix) return;
 

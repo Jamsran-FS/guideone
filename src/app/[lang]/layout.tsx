@@ -8,7 +8,7 @@ import "@fontsource/noto-sans-kr/korean-700.css";
 import "../globals.css";
 import { hasLocale, locales, tr } from "@/i18n/config";
 import { site } from "@/data/site";
-import { meta } from "@/data/home";
+import { getContent } from "@/lib/content";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import RevealObserver from "@/components/ui/RevealObserver";
@@ -25,6 +25,7 @@ export const viewport: Viewport = { themeColor: "#0a4a30" };
 export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Promise<Metadata> {
   const { lang } = await params;
   if (!hasLocale(lang)) return {};
+  const { meta } = await getContent();
   const title = tr(meta.title, lang);
   const description = tr(meta.description, lang);
   return {

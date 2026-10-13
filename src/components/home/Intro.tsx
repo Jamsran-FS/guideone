@@ -1,11 +1,13 @@
 import { tr, type Locale } from "@/i18n/config";
-import { intro, ui } from "@/data/home";
+import { ui } from "@/data/home";
+import { getContent } from "@/lib/content";
 import Badge from "../ui/Badge";
 import Container from "../ui/Container";
 import Icon from "../ui/Icon";
 import SectionHeading from "../ui/SectionHeading";
 
-export default function Intro({ lang }: { lang: Locale }) {
+export default async function Intro({ lang }: { lang: Locale }) {
+  const { intro } = await getContent();
   return (
     <section id="about" aria-labelledby="about-title" className="bg-surface py-24 lg:py-32">
       <Container className="grid gap-14 lg:grid-cols-12 lg:gap-10">

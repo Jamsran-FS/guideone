@@ -1,9 +1,10 @@
 import { tr, type Locale } from "@/i18n/config";
-import { why } from "@/data/home";
+import { getContent } from "@/lib/content";
 import Container from "../ui/Container";
 import SectionHeading from "../ui/SectionHeading";
 
-export default function WhyGuideOne({ lang }: { lang: Locale }) {
+export default async function WhyGuideOne({ lang }: { lang: Locale }) {
+  const { why } = await getContent();
   return (
     <section aria-labelledby="why-title" className="relative overflow-hidden bg-primary py-24 text-white lg:py-32">
       <div className="bg-grid-light pointer-events-none absolute inset-0" aria-hidden />

@@ -2,31 +2,24 @@
 
 import Link from "next/link";
 import { Eye, EyeOff, Info, Loader2, LogIn } from "lucide-react";
-import { useState, type FormEvent } from "react";
+import { useActionState, useState } from "react";
 import { tr, type Locale } from "@/i18n/config";
 import { loginCopy as c } from "@/data/home";
-import { login } from "@/lib/auth";
+import { loginAction, type LoginState } from "@/lib/actions/auth";
+import ResendButton from "./ResendButton";
 
-export default function LoginForm({ lang }: { lang: Locale }) {
+export const authField =
+  "mt-2 w-full rounded-xl border border-border bg-surface px-4 py-3 text-[15px] text-foreground outline-none transition placeholder:text-muted/60 focus:border-accent focus:ring-4 focus:ring-accent/15";
+
+export default function LoginForm({ lang, next }: { lang: Locale; next: string | null }) {
   const [show, setShow] = useState(false);
-  const [status, setStatus] = useState<"idle" | "sending" | "not_ready">("idle");
-
-  async function onSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const d = new FormData(e.currentTarget);
-    setStatus("sending");
-    const res = await login({ identifier: String(d.get("identifier") ?? ""), password: String(d.get("password") ?? "") });
-    setStatus(res.ok ? "idle" : "not_ready");
-  }
-
-  const field =
-    "mt-2 w-full rounded-xl border border-border bg-surface px-4 py-3 text-[15px] text-foreground outline-none transition placeholder:text-muted/60 focus:border-accent focus:ring-4 focus:ring-accent/15";
+  const [state, action, pending] = useActionState<LoginState, FormData>(loginAction.bind(null, lang, next), null);
 
   return (
-    <form onSubmit={onSubmit} className="space-y-5">
+    <form action={action} className="space-y-5">
       <label className="block text-sm font-medium text-foreground">
-        {tr(c.identifier, lang)}
-        <input name="identifier" required autoComplete="username" className={field} />
+        {tr(c.email, lang)}
+        <input name="email" type="email" required autoComplete="email" className={authField} />
       </label>
 
       <div>
@@ -39,7 +32,7 @@ export default function LoginForm({ lang }: { lang: Locale }) {
           </Link>
         </div>
         <div className="relative">
-          <input id="password" name="password" type={show ? "text" : "password"} required autoComplete="current-password" className={`${field} pr-12`} />
+          <input id="password" name="password" type={show ? "text" : "password"} required autoComplete="current-password" className={`${authField} pr-12`} />
           <button
             type="button"
             onClick={() => setShow((v) => !v)}
@@ -52,20 +45,23 @@ export default function LoginForm({ lang }: { lang: Locale }) {
         </div>
       </div>
 
-      {status === "not_ready" && (
-        <p role="status" className="flex gap-3 rounded-xl bg-accent-soft p-4 text-sm leading-relaxed text-primary">
-          <Info className="mt-0.5 size-4 shrink-0" aria-hidden />
-          {tr(c.notReady, lang)}
-        </p>
+      {state?.error && (
+        <div role="alert" className="space-y-3 rounded-xl bg-accent-soft p-4 text-sm leading-relaxed text-primary">
+          <p className="flex gap-3">
+            <Info className="mt-0.5 size-4 shrink-0" aria-hidden />
+            {tr(c[state.error], lang)}
+          </p>
+          {state.error === "unconfirmed" && <ResendButton lang={lang} email={state.email} />}
+        </div>
       )}
 
       <button
         type="submit"
-        disabled={status === "sending"}
+        disabled={pending}
         className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-accent text-sm font-semibold text-white shadow-lg shadow-accent/25 transition-colors hover:bg-accent-strong disabled:opacity-70"
       >
-        {status === "sending" ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <LogIn className="size-4" aria-hidden />}
-        {tr(status === "sending" ? c.sending : c.submit, lang)}
+        {pending ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <LogIn className="size-4" aria-hidden />}
+        {tr(pending ? c.sending : c.submit, lang)}
       </button>
     </form>
   );

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { tr, type Locale } from "@/i18n/config";
-import { services, upcomingServices } from "@/data/services";
-import { servicesCopy, ui } from "@/data/home";
+import { ui } from "@/data/home";
+import { getContent } from "@/lib/content";
 import Badge from "../ui/Badge";
 import Container from "../ui/Container";
 import Icon from "../ui/Icon";
@@ -19,47 +19,35 @@ type Item = {
   soon?: boolean;
 };
 
-const serviceIcons: Record<string, string> = { "korea-study": "GraduationCap", "korea-number": "Smartphone" };
-
 /** Бүх үйлчилгээ ижил хэмжээтэй карт (box) дотор — идэвхтэй нь товчтой, удахгүй нь "Тун удахгүй" төлөвтэй */
-export default function ServicesSection({ lang }: { lang: Locale }) {
-  const study = services.find((s) => s.slug === "korea-study")!;
-  const number = services.find((s) => s.slug === "korea-number")!;
+export default async function ServicesSection({ lang }: { lang: Locale }) {
+  const { services, upcomingServices, servicesCopy } = await getContent();
 
-  const items: Item[] = [
-    {
-      key: study.slug,
-      icon: serviceIcons[study.slug],
-      title: tr(study.title, lang),
-      description: tr(servicesCopy.studyShort, lang),
-      href: `/${lang}/services/${study.slug}`,
-      cta: tr(ui.more, lang),
-    },
-    {
-      key: "course",
-      icon: "BookOpen",
-      title: tr(servicesCopy.course.title, lang),
-      description: tr(servicesCopy.course.description, lang),
-      href: `/${lang}#courses`,
-      cta: tr(servicesCopy.course.cta, lang),
-    },
-    {
-      key: number.slug,
-      icon: serviceIcons[number.slug],
-      title: tr(number.title, lang),
-      description: tr(number.description, lang),
-      href: `/${lang}/services/${number.slug}`,
-      cta: tr(ui.more, lang),
-      isNew: number.isNew,
-    },
-    ...upcomingServices.map((u) => ({
-      key: u.slug,
-      icon: u.icon,
-      title: tr(u.title, lang),
-      description: tr(u.description, lang),
-      soon: true,
-    })),
-  ];
+  const active: Item[] = services.map((s) => ({
+    key: s.slug,
+    icon: s.icon,
+    title: tr(s.title, lang),
+    description: tr(s.summary ?? s.description, lang),
+    href: `/${lang}/services/${s.slug}`,
+    cta: tr(ui.more, lang),
+    isNew: s.isNew,
+  }));
+  const course: Item = {
+    key: "course",
+    icon: "BookOpen",
+    title: tr(servicesCopy.course.title, lang),
+    description: tr(servicesCopy.course.description, lang),
+    href: `/${lang}#courses`,
+    cta: tr(servicesCopy.course.cta, lang),
+  };
+  const upcoming: Item[] = upcomingServices.map((u) => ({
+    key: u.slug,
+    icon: u.icon,
+    title: tr(u.title, lang),
+    description: tr(u.description, lang),
+    soon: true,
+  }));
+  const items = [...active.slice(0, 1), course, ...active.slice(1), ...upcoming];
 
   return (
     <section id="services" aria-labelledby="services-title" className="bg-surface py-24 lg:py-32">

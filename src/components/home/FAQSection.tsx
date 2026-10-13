@@ -1,13 +1,14 @@
 import { ArrowRight } from "lucide-react";
 import { tr, type Locale } from "@/i18n/config";
-import { faqs } from "@/data/faq";
-import { faqCopy, ui } from "@/data/home";
+import { ui } from "@/data/home";
+import { getContent } from "@/lib/content";
 import Accordion from "../ui/Accordion";
 import Button from "../ui/Button";
 import Container from "../ui/Container";
 import SectionHeading from "../ui/SectionHeading";
 
-export default function FAQSection({ lang }: { lang: Locale }) {
+export default async function FAQSection({ lang }: { lang: Locale }) {
+  const { faqs, faqCopy } = await getContent();
   return (
     <section id="faq" aria-labelledby="faq-title" className="bg-surface py-24 lg:py-32">
       <Container className="grid gap-12 lg:grid-cols-12 lg:gap-10">

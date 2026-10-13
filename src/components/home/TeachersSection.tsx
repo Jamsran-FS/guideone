@@ -1,13 +1,13 @@
 import Image from "next/image";
 import { UserRound } from "lucide-react";
 import { tr, type Locale } from "@/i18n/config";
-import { teachers } from "@/data/teachers";
-import { teachersCopy } from "@/data/home";
+import { getContent } from "@/lib/content";
 import Card from "../ui/Card";
 import Container from "../ui/Container";
 import SectionHeading from "../ui/SectionHeading";
 
-export default function TeachersSection({ lang }: { lang: Locale }) {
+export default async function TeachersSection({ lang }: { lang: Locale }) {
+  const { teachers, teachersCopy } = await getContent();
   return (
     <section id="teachers" aria-labelledby="teachers-title" className="bg-surface py-24 lg:py-32">
       <Container>

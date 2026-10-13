@@ -9,6 +9,8 @@ import type { Localized } from "@/i18n/config";
  *   type: { mn: "Их сургууль", en: "University", ko: "대학교" }, logo: "/partners/name.png", url: "https://..." }
  */
 export type Partner = {
+  /** DB-ийн id (өргөдлийн формд ашиглана) */
+  id?: number;
   name: Localized;
   city?: Localized;
   type?: Localized;

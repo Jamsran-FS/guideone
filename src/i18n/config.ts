@@ -16,5 +16,5 @@ export const LOCALE_COOKIE = "NEXT_LOCALE";
 /** Нэг утгыг 3 хэлээр хадгалах төрөл. CMS/API-д шилжүүлэхэд ч ийм бүтэц хэвээр. */
 export type Localized<T = string> = Record<Locale, T>;
 
-/** Localized утгаас тухайн хэлийнхийг авна */
-export const tr = <T,>(value: Localized<T>, lang: Locale): T => value[lang];
+/** Localized утгаас тухайн хэлийнхийг авна. Орчуулга дутуу бол монгол утга харагдана. */
+export const tr = <T,>(value: Localized<T>, lang: Locale): T => value?.[lang] ?? value?.[defaultLocale];

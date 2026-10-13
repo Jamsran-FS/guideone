@@ -1,12 +1,12 @@
 import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 import { tr, type Locale } from "@/i18n/config";
-import { mapEmbedUrl, mapLinkUrl, site, tel } from "@/data/site";
-import { contactCopy } from "@/data/home";
+import { mapEmbedUrl, mapLinkUrl, tel } from "@/data/site";
+import { getContent } from "@/lib/content";
 import Container from "../ui/Container";
 import ContactForm from "./ContactForm";
 
-export default function ContactCTA({ lang }: { lang: Locale }) {
-  const c = contactCopy;
+export default async function ContactCTA({ lang }: { lang: Locale }) {
+  const { site, contactCopy: c } = await getContent();
   return (
     <section id="contact" aria-labelledby="contact-title" className="bg-background py-24 lg:py-32">
       <Container>
@@ -105,7 +105,7 @@ export default function ContactCTA({ lang }: { lang: Locale }) {
               data-reveal
               style={{ ["--reveal-delay" as string]: "100ms" }}
             >
-              <ContactForm lang={lang} />
+              <ContactForm lang={lang} copy={c} />
             </div>
           </div>
         </div>

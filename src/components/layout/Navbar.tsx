@@ -15,16 +15,34 @@ import {
   X,
   type LucideIcon,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { tr, type Locale } from "@/i18n/config";
 import { localHref, navigation, type NavLink } from "@/data/site";
 import { ui } from "@/data/home";
+import { homePath, parseSessionUser, USER_COOKIE } from "@/lib/session-cookies";
 import Badge from "../ui/Badge";
 import Icon from "../ui/Icon";
 import LanguageSwitcher from "./LanguageSwitcher";
 import Logo from "./Logo";
 
+/** USER_COOKIE-г уншина (server дээр null) — нэвтэрсэн бол "Нэвтрэх"-ийн оронд бүртгэл/админ холбоос */
+const readUserCookie = () =>
+  document.cookie
+    .split("; ")
+    .find((c) => c.startsWith(`${USER_COOKIE}=`))
+    ?.slice(USER_COOKIE.length + 1) ?? null;
+const noSubscribe = () => () => {};
+
+function useAccountLink(lang: Locale) {
+  const raw = useSyncExternalStore(noSubscribe, readUserCookie, () => null);
+  const user = parseSessionUser(raw ? decodeURIComponent(raw) : undefined);
+  if (!user) return { href: `/${lang}/login`, label: tr(ui.login, lang) };
+  const label = user.role === "sysadmin" ? ui.admin : user.role === "teacher" ? ui.teacher : ui.account;
+  return { href: homePath(user.role, lang), label: tr(label, lang) };
+}
+
 export default function Navbar({ lang }: { lang: Locale }) {
+  const account = useAccountLink(lang);
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -84,11 +102,11 @@ export default function Navbar({ lang }: { lang: Locale }) {
             <LanguageSwitcher lang={lang} label={tr(ui.language, lang)} />
           </div>
           <Link
-            href={`/${lang}/login`}
+            href={account.href}
             className="hidden h-11 items-center gap-2 whitespace-nowrap rounded-full bg-accent px-5 text-sm font-semibold text-white shadow-lg shadow-accent/30 transition-colors hover:bg-accent-strong sm:inline-flex"
           >
             <UserRound className="size-4" aria-hidden />
-            {tr(ui.login, lang)}
+            {account.label}
           </Link>
           <button
             type="button"
@@ -202,6 +220,7 @@ function ServicesMenu({ item, lang }: { item: NavLink; lang: Locale }) {
 /* ── Mobile drawer ─────────────────────────────────────────── */
 function MobileDrawer({ open, onClose, lang }: { open: boolean; onClose: () => void; lang: Locale }) {
   const [servicesOpen, setServicesOpen] = useState(false);
+  const account = useAccountLink(lang);
 
   return (
     <div className={`fixed inset-0 z-50 xl:hidden ${open ? "" : "pointer-events-none"}`} inert={!open}>
@@ -309,12 +328,12 @@ function MobileDrawer({ open, onClose, lang }: { open: boolean; onClose: () => v
         <div className="space-y-3 border-t border-border p-5">
           <LanguageSwitcher lang={lang} label={tr(ui.language, lang)} variant="list" />
           <Link
-            href={`/${lang}/login`}
+            href={account.href}
             onClick={onClose}
             tabIndex={open ? 0 : -1}
             className="flex h-12 items-center justify-center gap-2 rounded-full bg-accent text-sm font-semibold text-white"
           >
-            <UserRound className="size-4" aria-hidden /> {tr(ui.login, lang)}
+            <UserRound className="size-4" aria-hidden /> {account.label}
           </Link>
         </div>
       </div>

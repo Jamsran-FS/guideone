@@ -2,13 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { tr, type Locale } from "@/i18n/config";
-import { footerHelp, footerNavigation, localHref, site, tel } from "@/data/site";
-import { footerCopy, ui } from "@/data/home";
+import { footerHelp, footerNavigation, localHref, tel } from "@/data/site";
+import { ui } from "@/data/home";
+import { getContent } from "@/lib/content";
 import BackToTop from "../ui/BackToTop";
 import { FacebookIcon, InstagramIcon, TiktokIcon } from "../ui/SocialIcons";
 
 /** zuca.mn-ийн бүтэцтэй footer: бөөрөнхий тэнгэр өнгийн карт, бүдэг үүлс, багана, доод мөр */
-export default function Footer({ lang }: { lang: Locale }) {
+export default async function Footer({ lang }: { lang: Locale }) {
+  const { site, footerCopy } = await getContent();
   const socials = [
     { href: site.socials.facebook, label: "Facebook", Icon: FacebookIcon },
     { href: site.socials.instagram, label: "Instagram", Icon: InstagramIcon },

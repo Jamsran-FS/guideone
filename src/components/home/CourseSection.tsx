@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { tr, type Locale } from "@/i18n/config";
-import { courses } from "@/data/courses";
-import { coursesCopy, ui } from "@/data/home";
+import { ui } from "@/data/home";
+import { getContent } from "@/lib/content";
 import Card from "../ui/Card";
 import Container from "../ui/Container";
 import SectionHeading from "../ui/SectionHeading";
 
-export default function CourseSection({ lang }: { lang: Locale }) {
+export default async function CourseSection({ lang }: { lang: Locale }) {
+  const { courses, coursesCopy } = await getContent();
   return (
     <section id="courses" aria-labelledby="courses-title" className="bg-background py-24 lg:py-32">
       <Container>
