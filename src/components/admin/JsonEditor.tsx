@@ -104,7 +104,7 @@ export default function JsonEditor({ value, onChange, name }: { value: Json; onC
   return (
     <div className="space-y-5">
       {Object.entries(value).map(([key, child]) => (
-        <div key={key} className={isObject(child) && !isLocalized(child) && !isLocalizedList(child) ? "rounded-xl border border-border p-4" : ""}>
+        <div key={key} className={isObject(child) && !isLocalized(child) && !isLocalizedList(child) ? "rounded-md border border-border p-4" : ""}>
           <p className="mb-1.5 flex items-baseline gap-2 text-[13px] font-semibold text-foreground">
             {keyLabels[key] ?? key}
             {keyLabels[key] && <code className="text-[11px] font-normal text-muted/70">{key}</code>}
@@ -127,7 +127,7 @@ function ArrayEditor({ value, onChange }: { value: Json[]; onChange: (v: Json[])
   return (
     <div className="space-y-3">
       {value.map((item, i) => (
-        <div key={i} className="rounded-xl border border-border bg-background p-3">
+        <div key={i} className="rounded-md border border-border bg-background p-3">
           <div className="mb-2 flex items-center justify-between gap-2">
             <span className="text-xs font-semibold text-muted">#{i + 1}</span>
             <div className="flex gap-1">

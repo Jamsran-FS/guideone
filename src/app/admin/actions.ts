@@ -145,3 +145,32 @@ export async function removeEnrollment(id: number) {
   if (result.ok) revalidatePath("/admin", "layout");
   return result;
 }
+
+/* ── Хэрэглэгч үүсгэх, засах ──────────────────────────────────── */
+
+export type NewUserInput = { email: string; password: string; fullName: string; phone: string; role: Role; avatarUrl: string | null };
+
+export async function createUser(input: NewUserInput) {
+  const result = await run((token) =>
+    api<{ profile: { id: string }; requiresConfirmation: boolean }>("/api/admin/users", { method: "POST", token, json: input }),
+  );
+  if (result.ok) revalidatePath("/admin", "layout");
+  return result;
+}
+
+export type UserPatch = {
+  full_name: string;
+  phone: string;
+  birth_date: string | null;
+  korean_level: string;
+  parent_name: string;
+  parent_phone: string;
+  avatar_url: string | null;
+  role?: Role;
+};
+
+export async function updateUser(id: string, patch: UserPatch) {
+  const result = await run((token) => api(`/api/admin/users/${id}`, { method: "PATCH", token, json: patch }));
+  if (result.ok) revalidatePath("/admin", "layout");
+  return result;
+}

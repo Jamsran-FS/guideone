@@ -78,7 +78,7 @@ export function MaterialForm({ groupId }: { groupId: number }) {
           name="file"
           type="file"
           accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.webp,.mp3,.m4a,.zip"
-          className="mt-1.5 block w-full text-sm text-muted file:mr-3 file:rounded-full file:border-0 file:bg-accent-soft file:px-4 file:py-2 file:text-sm file:font-semibold file:text-primary"
+          className="mt-1.5 block w-full text-sm text-muted file:mr-3 file:rounded-md file:border-0 file:bg-accent-soft file:px-4 file:py-2 file:text-sm file:font-semibold file:text-primary"
         />
         <span className="mt-1 block text-xs font-normal text-muted">PDF, Word, PowerPoint, Excel, зураг, аудио · 20MB хүртэл</span>
       </label>
@@ -221,7 +221,7 @@ export function ScoreSheet({
       }}
       className="mt-4"
     >
-      <div className="overflow-x-auto rounded-xl border border-border">
+      <div className="overflow-x-auto rounded-md border border-border">
         <table className="w-full min-w-[520px] text-left text-sm">
           <thead className="bg-background text-xs uppercase tracking-wider text-muted">
             <tr>

@@ -29,6 +29,7 @@ export type Profile = {
   parent_name: string;
   parent_phone: string;
   korean_level: string;
+  avatar_url?: string | null;
   created_at: string;
 };
 

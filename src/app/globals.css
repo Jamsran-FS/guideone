@@ -20,7 +20,44 @@
   --foreground: #0d1f17;
   --muted: #56675e;
   --border: #e0e8e3;
+  /* Админ/багшийн самбарын арын дэвсгэр */
+  --panel-bg: #f4f6f5;
 }
+
+/* Dark mode — зөвхөн админ, багшийн самбарт (<html data-theme="dark">). Нийтийн сайт гэрэлтэй хэвээр.
+   Supabase Dashboard-ийн өнгө: саармаг хар саарал, нимгэн хүрээ, нэг тод ногоон. */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --primary: #3ecf8e;
+  --primary-dark: #5fe0a5;
+  --primary-soft: #1a2e25;
+  --accent: #3ecf8e;
+  --accent-strong: #5fe0a5;
+  --accent-soft: #1b2a23;
+  --lime: #3ecf8e;
+  --signal: #f87171;
+  --background: #232323;
+  --surface: #1c1c1c;
+  --foreground: #ededed;
+  --muted: #a1a1a1;
+  --border: #2e2e2e;
+  --panel-bg: #171717;
+}
+
+/* Дүүргэлттэй товч — Supabase шиг бараан ногоон дэвсгэр, ногоон хүрээ (текст/холбоос нь тод ногоон хэвээр) */
+[data-theme="dark"] .bg-accent {
+  background-color: #006239;
+  box-shadow: inset 0 0 0 1px rgb(62 207 142 / 0.35);
+}
+[data-theme="dark"] .hover\:bg-accent-strong:hover {
+  background-color: #007a48;
+}
+[data-theme="dark"] .shadow-accent\/25 {
+  --tw-shadow-color: transparent;
+}
+
+/* dark: variant нь data-theme="dark"-ийг дагана (системийн тохиргоог биш) */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @theme inline {
   --color-primary: var(--primary);

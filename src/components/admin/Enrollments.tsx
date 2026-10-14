@@ -18,7 +18,7 @@ export function EnrollmentTable({ groupId, enrollments, candidates }: { groupId:
       ) : (
         <Panel className="overflow-x-auto">
           <table className="w-full min-w-[880px] text-left text-sm">
-            <thead className="border-b border-border text-xs uppercase tracking-wider text-muted">
+            <thead className="border-b border-border bg-background/70 text-xs uppercase tracking-wider text-muted">
               <tr>
                 <th className="px-4 py-3 font-semibold">Суралцагч</th>
                 <th className="px-4 py-3 font-semibold">Төлөв</th>

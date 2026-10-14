@@ -5,10 +5,12 @@ import { useRef, useState } from "react";
 import { locales, type Localized } from "@/i18n/config";
 import { uploadImage } from "@/app/admin/actions";
 import Icon, { iconNames } from "../ui/Icon";
-import { btn, input } from "./ui";
+import { Avatar, btn, input } from "./ui";
 
 const langLabel: Record<string, string> = { mn: "MN", en: "EN", ko: "KO" };
 const blank = (): Localized => ({ mn: "", en: "", ko: "" });
+/** Талбарын зүүн талд харагдах хэлний шошго (MN / EN / KO) */
+const langTag = "pointer-events-none absolute left-3 text-[10px] font-bold leading-none tracking-wider text-muted/70";
 
 /** Нэг утгыг 3 хэлээр: MN / EN / KO */
 export function LocalizedInput({
@@ -25,17 +27,17 @@ export function LocalizedInput({
     <div className="grid gap-2 md:grid-cols-3">
       {locales.map((lang) => (
         <div key={lang} className="relative">
-          <span className="pointer-events-none absolute left-2.5 top-2 text-[10px] font-bold tracking-wider text-muted/70">{langLabel[lang]}</span>
+          <span className={`${langTag} ${multiline ? "top-[13px]" : "top-1/2 -translate-y-1/2"}`}>{langLabel[lang]}</span>
           {multiline ? (
             <textarea
               lang={lang}
               rows={4}
               value={v[lang] ?? ""}
               onChange={(e) => onChange({ ...v, [lang]: e.target.value })}
-              className={`${input} resize-y pt-6`}
+              className={`${input} resize-y pl-11`}
             />
           ) : (
-            <input lang={lang} value={v[lang] ?? ""} onChange={(e) => onChange({ ...v, [lang]: e.target.value })} className={`${input} pt-6`} />
+            <input lang={lang} value={v[lang] ?? ""} onChange={(e) => onChange({ ...v, [lang]: e.target.value })} className={`${input} pl-11`} />
           )}
         </div>
       ))}
@@ -49,13 +51,13 @@ export function LocalizedListInput({ value, onChange }: { value: Localized<strin
     <div className="grid gap-2 md:grid-cols-3">
       {locales.map((lang) => (
         <div key={lang} className="relative">
-          <span className="pointer-events-none absolute left-2.5 top-2 text-[10px] font-bold tracking-wider text-muted/70">{langLabel[lang]}</span>
+          <span className={`${langTag} top-[13px]`}>{langLabel[lang]}</span>
           <textarea
             lang={lang}
             rows={6}
             value={(value?.[lang] ?? []).join("\n")}
             onChange={(e) => onChange({ ...value, [lang]: e.target.value.split("\n") })}
-            className={`${input} resize-y pt-6`}
+            className={`${input} resize-y pl-11`}
           />
         </div>
       ))}
@@ -71,7 +73,7 @@ export function DetailsInput({ value, onChange }: { value: Detail[]; onChange: (
   return (
     <div className="space-y-3">
       {value.map((d, i) => (
-        <div key={i} className="rounded-xl border border-border bg-background p-3">
+        <div key={i} className="rounded-md border border-border bg-background p-3">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-xs font-semibold text-muted">#{i + 1}</span>
             <button type="button" onClick={() => onChange(value.filter((_, j) => j !== i))} className={btn.small} aria-label="Устгах">
@@ -110,7 +112,7 @@ export function ImageInput({ value, onChange }: { value: string | null | undefin
 
   return (
     <div className="flex items-start gap-3">
-      <div className="grid size-20 shrink-0 place-items-center overflow-hidden rounded-xl border border-border bg-background">
+      <div className="grid size-20 shrink-0 place-items-center overflow-hidden rounded-md border border-border bg-background">
         {/* eslint-disable-next-line @next/next/no-img-element -- админ preview */}
         {value ? <img src={value} alt="" className="size-full object-cover" /> : <ImageUp className="size-6 text-muted/50" aria-hidden />}
       </div>
@@ -155,13 +157,63 @@ export function IconSelect({ value, onChange }: { value: string; onChange: (v: s
           onClick={() => onChange(name)}
           title={name}
           aria-pressed={value === name}
-          className={`grid size-11 place-items-center rounded-xl border transition ${
+          className={`grid size-11 place-items-center rounded-md border transition ${
             value === name ? "border-accent bg-accent-soft text-accent" : "border-border bg-surface text-muted hover:text-foreground"
           }`}
         >
           <Icon name={name} className="size-5" />
         </button>
       ))}
+    </div>
+  );
+}
+
+/** Профайл зураг — дугуй preview, upload, арилгах */
+export function AvatarInput({ value, name, onChange }: { value: string | null; name: string; onChange: (v: string | null) => void }) {
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function upload(file: File) {
+    setUploading(true);
+    setError(null);
+    const data = new FormData();
+    data.append("file", file);
+    const result = await uploadImage(data);
+    setUploading(false);
+    if (result.ok) onChange(result.data.url);
+    else setError(result.error);
+  }
+
+  return (
+    <div className="flex items-center gap-4">
+      <Avatar url={value} name={name} size={72} />
+      <div className="space-y-2">
+        <div className="flex flex-wrap gap-2">
+          <button type="button" onClick={() => fileRef.current?.click()} disabled={uploading} className={btn.small}>
+            {uploading ? <Loader2 className="size-3.5 animate-spin" aria-hidden /> : <ImageUp className="size-3.5" aria-hidden />}
+            {value ? "Зураг солих" : "Зураг оруулах"}
+          </button>
+          {value && (
+            <button type="button" onClick={() => onChange(null)} disabled={uploading} className={btn.small}>
+              <Trash2 className="size-3.5" aria-hidden /> Арилгах
+            </button>
+          )}
+        </div>
+        <p className="text-xs text-muted">JPG, PNG, WEBP · 5MB хүртэл · дөрвөлжин зураг тохиромжтой</p>
+        {error && <p className="text-xs text-signal">{error}</p>}
+        <input
+          ref={fileRef}
+          type="file"
+          accept="image/jpeg,image/png,image/webp,image/gif"
+          className="hidden"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) void upload(file);
+            e.target.value = "";
+          }}
+        />
+      </div>
     </div>
   );
 }

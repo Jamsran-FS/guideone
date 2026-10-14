@@ -44,7 +44,7 @@ export default async function TeacherGroup({ params }: PageProps<"/teacher/group
           ["#announcements", `Зар (${announcements.length})`],
           ["#exams", `Шалгалт (${exams.length})`],
         ].map(([href, label]) => (
-          <a key={href} href={href} className="rounded-full border border-border bg-surface px-4 py-1.5 font-semibold text-foreground hover:border-primary/40">
+          <a key={href} href={href} className="rounded-md border border-border bg-surface px-3.5 py-1.5 font-semibold text-foreground hover:border-primary/40">
             {label}
           </a>
         ))}
@@ -58,7 +58,7 @@ export default async function TeacherGroup({ params }: PageProps<"/teacher/group
         ) : (
           <Panel className="overflow-x-auto">
             <table className="w-full min-w-[640px] text-left text-sm">
-              <thead className="border-b border-border text-xs uppercase tracking-wider text-muted">
+              <thead className="border-b border-border bg-background/70 text-xs uppercase tracking-wider text-muted">
                 <tr>
                   <th className="px-5 py-3 font-semibold">Нэр</th>
                   <th className="px-5 py-3 font-semibold">Холбоо барих</th>

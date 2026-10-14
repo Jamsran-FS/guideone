@@ -19,7 +19,7 @@ export default async function TeacherHome() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {groups.map((g) => (
-            <Link key={g.id} href={`/teacher/groups/${g.id}`} className="group flex flex-col rounded-2xl border border-border bg-surface p-6 transition hover:border-accent/40">
+            <Link key={g.id} href={`/teacher/groups/${g.id}`} className="group flex flex-col rounded-lg border border-border bg-surface p-6 transition hover:border-accent/40">
               <div className="flex items-start justify-between gap-3">
                 <h2 className="font-display text-lg font-bold text-foreground">{g.name}</h2>
                 {!g.is_active && <Pill>Хаагдсан</Pill>}

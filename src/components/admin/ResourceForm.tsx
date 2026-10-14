@@ -60,7 +60,7 @@ export default function ResourceForm({ resource, initial }: { resource: Resource
         ))}
       </Panel>
 
-      <div className="sticky bottom-0 mt-6 flex flex-wrap items-center gap-3 border-t border-border bg-background/90 py-4 backdrop-blur">
+      <div className="mt-6 flex flex-wrap items-center gap-3">
         <button type="submit" disabled={pending} className={btn.primary}>
           {pending ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <Save className="size-4" aria-hidden />}
           Хадгалах

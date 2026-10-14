@@ -43,7 +43,7 @@ export default async function Students({ searchParams }: PageProps<"/admin/stude
   const students = activeOnly ? all.filter((s) => s.enrollments.some((e) => e.status === "active")) : all;
 
   const tab = (active: boolean) =>
-    `rounded-full px-4 py-1.5 text-sm font-semibold ${active ? "bg-primary text-white" : "border border-border bg-surface text-foreground hover:border-primary/40"}`;
+    `rounded-md px-3.5 py-1.5 text-sm font-semibold ${active ? "bg-accent text-white" : "border border-border bg-surface text-foreground hover:border-primary/40"}`;
 
   return (
     <>
