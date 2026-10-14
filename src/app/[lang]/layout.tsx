@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { notFound } from "next/navigation";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/manrope";
@@ -59,6 +60,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
         <main id="main">{children}</main>
         <Footer lang={lang} />
         <RevealObserver />
+        <Analytics />
       </body>
     </html>
   );
