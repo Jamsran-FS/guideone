@@ -3,7 +3,7 @@ import { cache } from "react";
 import type { Localized } from "@/i18n/config";
 import { courses as staticCourses, type Course } from "@/data/courses";
 import { faqs as staticFaqs, type Faq } from "@/data/faq";
-import { partners as staticPartners, type Partner } from "@/data/partners";
+import { partners as staticPartners, type Partner, type PartnerRow as PartnerDetailRow } from "@/data/partners";
 import { defaultSections, type Sections } from "@/data/sections";
 import { services as staticServices, upcomingServices as staticUpcoming, type Service, type ServiceDetail, type UpcomingService } from "@/data/services";
 import { site } from "@/data/site";
@@ -30,7 +30,22 @@ export type Content = Omit<Sections, "site"> & {
 type L = Localized;
 type CourseRow = { id: number; slug: string; glyph: string; name: L; level: L; description: L; duration: L | null; price: L | null; is_placeholder: boolean };
 type FaqRow = { question: L; answer: L };
-type PartnerRow = { id: number; name: L; city: L | null; type: L | null; logo_url: string | null; url: string | null };
+type PartnerRow = {
+  id: number;
+  name: L;
+  city: L | null;
+  type: L | null;
+  logo_url: string | null;
+  image_url?: string | null;
+  url: string | null;
+  description?: L | null;
+  requirements?: Localized<string[]>;
+  tuition?: PartnerDetailRow[];
+  scholarships?: PartnerDetailRow[];
+  intakes?: PartnerDetailRow[];
+  costs?: PartnerDetailRow[];
+  majors?: Localized<string[]>;
+};
 type TeacherRow = {
   name: string;
   image_url: string | null;
@@ -64,6 +79,7 @@ type ApiContent = {
 };
 
 const opt = <T,>(v: T | null): T | undefined => v ?? undefined;
+const emptyList: Localized<string[]> = { mn: [], en: [], ko: [] };
 
 /**
  * Сайтын бүх контент. Backend (/api/content)-ээс уншиж, 5 минут cache-лэнэ;
@@ -102,7 +118,22 @@ export const getContent = cache(async (): Promise<Content> => {
       isPlaceholder: c.is_placeholder,
     })),
     faqs: data.faqs.map((f) => ({ q: f.question, a: f.answer })),
-    partners: data.partners.map((p) => ({ id: p.id, name: p.name, city: opt(p.city), type: opt(p.type), logo: opt(p.logo_url), url: opt(p.url) })),
+    partners: data.partners.map((p) => ({
+      id: p.id,
+      name: p.name,
+      city: opt(p.city),
+      type: opt(p.type),
+      logo: opt(p.logo_url),
+      image: opt(p.image_url ?? null),
+      url: opt(p.url),
+      description: opt(p.description ?? null),
+      requirements: p.requirements ?? emptyList,
+      tuition: p.tuition ?? [],
+      scholarships: p.scholarships ?? [],
+      intakes: p.intakes ?? [],
+      costs: p.costs ?? [],
+      majors: p.majors ?? emptyList,
+    })),
     teachers: data.teachers.map((t) => ({
       name: t.name,
       image: opt(t.image_url),

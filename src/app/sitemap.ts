@@ -4,8 +4,12 @@ import { site } from "@/data/site";
 import { getContent } from "@/lib/content";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const { services } = await getContent();
-  const paths = ["", ...services.map((s) => `/services/${s.slug}`)];
+  const { services, partners } = await getContent();
+  const paths = [
+    "",
+    ...services.map((s) => `/services/${s.slug}`),
+    ...partners.filter((p) => p.id !== undefined).map((p) => `/partners/${p.id}`),
+  ];
   return paths.flatMap((p) =>
     locales.map((l) => ({
       url: `${site.url}/${l}${p}`,

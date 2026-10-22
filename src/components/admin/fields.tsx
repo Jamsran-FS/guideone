@@ -69,7 +69,15 @@ export function LocalizedListInput({ value, onChange }: { value: Localized<strin
 type Detail = { label: Localized; value: Localized | null };
 
 /** Үйлчилгээний "нэр — утга" хүснэгт */
-export function DetailsInput({ value, onChange }: { value: Detail[]; onChange: (v: Detail[]) => void }) {
+export function DetailsInput({
+  value,
+  onChange,
+  columns = ["Нэр", "Утга (хоосон бол \"Удахгүй шинэчлэгдэнэ\")"],
+}: {
+  value: Detail[];
+  onChange: (v: Detail[]) => void;
+  columns?: [string, string];
+}) {
   const set = (i: number, patch: Partial<Detail>) => onChange(value.map((d, j) => (j === i ? { ...d, ...patch } : d)));
   return (
     <div className="space-y-3">
@@ -81,9 +89,9 @@ export function DetailsInput({ value, onChange }: { value: Detail[]; onChange: (
               <Trash2 className="size-3.5" aria-hidden />
             </button>
           </div>
-          <p className="mb-1 text-xs text-muted">Нэр</p>
+          <p className="mb-1 text-xs text-muted">{columns[0]}</p>
           <LocalizedInput value={d.label} onChange={(label) => set(i, { label })} />
-          <p className="mb-1 mt-3 text-xs text-muted">Утга (хоосон бол &quot;Удахгүй шинэчлэгдэнэ&quot;)</p>
+          <p className="mb-1 mt-3 text-xs text-muted">{columns[1]}</p>
           <LocalizedInput value={d.value} onChange={(v) => set(i, { value: v })} />
         </div>
       ))}

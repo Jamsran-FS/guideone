@@ -26,6 +26,8 @@ export type Field = {
   optional?: boolean;
   help?: string;
   options?: { value: string; label: string }[];
+  /** "details" хүснэгтийн баганын нэрс (анхдагч: Нэр / Утга) */
+  columns?: [string, string];
 };
 
 export type Row = Record<string, unknown> & { id?: number; is_published?: boolean; sort_order?: number };
@@ -99,10 +101,22 @@ export const resources = {
       { name: "type", label: "Төрөл", type: "localized", optional: true, help: "Жишээ нь: Их сургууль, Хэлний сургууль, Ахлах сургууль" },
       { name: "city", label: "Хот", type: "localized", optional: true },
       { name: "logo_url", label: "Лого", type: "image", optional: true },
+      { name: "image_url", label: "Кампусын зураг", type: "image", optional: true, help: "Карт болон дэлгэрэнгүй хуудасны толгойд харагдана. Хөндлөн зураг тохиромжтой." },
       { name: "url", label: "Вэбсайт", type: "url", optional: true },
+      { name: "description", label: "Товч танилцуулга", type: "localizedText", optional: true },
+      { name: "requirements", label: "Элсэх шаардлага", type: "localizedList", help: "Мөр бүрд нэг шаардлага. Жишээ нь: TOPIK 3 буюу түүнээс дээш" },
+      { name: "tuition", label: "Сургалтын төлбөр", type: "details", columns: ["Салбар / хөтөлбөр", "Төлбөр"], help: "Жишээ нь: Инженерийн коллеж → 4,000,000₩ / семестр" },
+      { name: "scholarships", label: "Тэтгэлэг", type: "details", columns: ["Нөхцөл", "Хөнгөлөлт"], help: "Жишээ нь: TOPIK 4 → 55%, GPA 3.5+ → 30%" },
+      { name: "intakes", label: "Элсэлтийн хугацаа", type: "details", columns: ["Улирал / ээлж", "Хугацаа"], help: "Жишээ нь: Хаврын элсэлт (3-р сар) → 9–1 сар" },
+      { name: "costs", label: "Бусад зардал", type: "details", columns: ["Зардал", "Дүн"], help: "Банкны баталгаа, дотуур байр, бүртгэлийн хураамж г.м." },
+      { name: "majors", label: "Мэргэжлүүд", type: "localizedList", help: "Мөр бүрд нэг мэргэжил." },
       ...common,
     ],
-    summary: (r) => ({ title: mn(r.name), subtitle: [mn(r.type), mn(r.city)].filter(Boolean).join(" · ") }),
+    summary: (r) => ({
+      title: mn(r.name),
+      subtitle: [mn(r.type), mn(r.city)].filter(Boolean).join(" · "),
+      image: (r.image_url as string | null) || (r.logo_url as string | null) || null,
+    }),
   },
   teachers: {
     title: "Багш нар",
@@ -198,14 +212,14 @@ export function normalizeRow(config: ResourceConfig, row: Row): Row {
         out[f.name] = f.optional && isBlankLocalized(v) ? null : v;
         break;
       case "localizedList": {
-        const list = v as Localized<string[]>;
+        const list = (v as Localized<string[]> | null) ?? { mn: [], en: [], ko: [] };
         out[f.name] = Object.fromEntries(
           Object.entries(list).map(([lang, items]) => [lang, items.map((s) => s.trim()).filter(Boolean)]),
         );
         break;
       }
       case "details":
-        out[f.name] = (v as { label: Localized; value: Localized | null }[]).map((d) => ({
+        out[f.name] = ((v as { label: Localized; value: Localized | null }[] | null) ?? []).map((d) => ({
           label: d.label,
           value: isBlankLocalized(d.value) ? null : d.value,
         }));

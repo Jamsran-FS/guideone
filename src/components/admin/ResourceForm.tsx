@@ -88,9 +88,9 @@ function FieldInput({ field, value, onChange }: { field: Field; value: unknown; 
     case "localizedText":
       return <LocalizedInput value={value as Localized | null} onChange={onChange} multiline />;
     case "localizedList":
-      return <LocalizedListInput value={value as Localized<string[]>} onChange={onChange} />;
+      return <LocalizedListInput value={(value as Localized<string[]> | null) ?? { mn: [], en: [], ko: [] }} onChange={onChange} />;
     case "details":
-      return <DetailsInput value={(value as never[]) ?? []} onChange={onChange} />;
+      return <DetailsInput value={(value as never[]) ?? []} onChange={onChange} columns={field.columns} />;
     case "education":
       return <EducationInput value={(value as never[]) ?? []} onChange={onChange} />;
     case "image":

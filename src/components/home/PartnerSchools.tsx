@@ -1,6 +1,8 @@
 import Image from "next/image";
-import { ArrowRight, ArrowUpRight, School } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, School } from "lucide-react";
 import { tr, type Locale } from "@/i18n/config";
+import { partnerCopy } from "@/data/partners";
 import { getContent } from "@/lib/content";
 import Button from "../ui/Button";
 import Container from "../ui/Container";
@@ -21,34 +23,56 @@ export default async function PartnerSchools({ lang }: { lang: Locale }) {
 
         <div className="lg:col-span-7" data-reveal>
           {partners.length > 0 ? (
-            <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <ul className="grid gap-4 sm:grid-cols-2">
               {partners.map((p) => {
+                const majors = tr(p.majors, lang);
                 const body = (
                   <>
-                    <span className="relative grid size-14 place-items-center overflow-hidden rounded-xl bg-accent-soft text-accent">
-                      {p.logo ? (
-                        <Image src={p.logo} alt="" fill sizes="56px" className="object-contain p-2" />
+                    <span className="relative block aspect-[16/9] overflow-hidden bg-accent-soft">
+                      {p.image ? (
+                        <Image src={p.image} alt="" fill sizes="(min-width:1024px) 30vw, (min-width:640px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:scale-[1.03]" />
                       ) : (
-                        <School className="size-6" aria-hidden />
+                        <School className="absolute inset-0 m-auto size-10 text-accent/30" aria-hidden />
+                      )}
+                      {p.logo && (
+                        <span className="absolute bottom-3 left-3 size-12 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5">
+                          <Image src={p.logo} alt="" fill sizes="48px" className="object-contain p-1.5" />
+                        </span>
                       )}
                     </span>
-                    <span className="mt-4 block font-display font-bold text-foreground">{tr(p.name, lang)}</span>
-                    {(p.city || p.type) && (
-                      <span className="mt-1 block text-sm text-muted">
-                        {[p.type && tr(p.type, lang), p.city && tr(p.city, lang)].filter(Boolean).join(" · ")}
-                      </span>
-                    )}
+                    <span className="block p-5">
+                      <span className="block font-display font-bold text-foreground">{tr(p.name, lang)}</span>
+                      {(p.city || p.type) && (
+                        <span className="mt-1 block text-sm text-muted">
+                          {[p.type && tr(p.type, lang), p.city && tr(p.city, lang)].filter(Boolean).join(" · ")}
+                        </span>
+                      )}
+                      {majors.length > 0 && (
+                        <span className="mt-3 flex flex-wrap gap-1.5">
+                          {majors.slice(0, 3).map((m) => (
+                            <span key={m} className="rounded-full bg-background px-2.5 py-1 text-xs text-muted ring-1 ring-border">
+                              {m}
+                            </span>
+                          ))}
+                          {majors.length > 3 && <span className="px-1 py-1 text-xs text-muted">+{majors.length - 3}</span>}
+                        </span>
+                      )}
+                      {p.id !== undefined && (
+                        <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent">
+                          {tr(partnerCopy.more, lang)} <ArrowRight className="size-4 transition group-hover:translate-x-0.5" aria-hidden />
+                        </span>
+                      )}
+                    </span>
                   </>
                 );
                 return (
-                  <li key={p.name.en} className="rounded-2xl border border-border p-5 transition hover:border-accent/40">
-                    {p.url ? (
-                      <a href={p.url} target="_blank" rel="noreferrer" className="group block">
+                  <li key={p.id ?? p.name.en} className="overflow-hidden rounded-2xl border border-border bg-surface transition hover:border-accent/40">
+                    {p.id !== undefined ? (
+                      <Link href={`/${lang}/partners/${p.id}`} className="group block h-full">
                         {body}
-                        <ArrowUpRight className="mt-3 size-4 text-muted transition group-hover:text-accent" aria-hidden />
-                      </a>
+                      </Link>
                     ) : (
-                      body
+                      <div className="group">{body}</div>
                     )}
                   </li>
                 );
