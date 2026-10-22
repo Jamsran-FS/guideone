@@ -1,4 +1,5 @@
 import type { Localized } from "@/i18n/config";
+import type { Education } from "@/data/teachers";
 
 /**
  * Админ самбарын жагсаалт контентын тохиргоо — талбар бүрийг ямар оролтоор засахыг тодорхойлно.
@@ -15,7 +16,8 @@ export type FieldType =
   | "localized"
   | "localizedText"
   | "localizedList"
-  | "details";
+  | "details"
+  | "education";
 
 export type Field = {
   name: string;
@@ -33,7 +35,8 @@ export type ResourceConfig = {
   singular: string;
   description: string;
   fields: Field[];
-  summary: (row: Row) => { title: string; subtitle?: string };
+  /** `image` — тодорхойлогдсон бол жагсаалтад жижиг зураг харуулна (null бол хоосон дүрс). */
+  summary: (row: Row) => { title: string; subtitle?: string; image?: string | null };
 };
 
 const mn = (v: unknown) => (v as Localized | null)?.mn ?? "";
@@ -112,9 +115,10 @@ export const resources = {
       { name: "specialty", label: "Мэргэшил", type: "localized", optional: true },
       { name: "experience", label: "Туршлага", type: "localized", optional: true },
       { name: "description", label: "Тайлбар", type: "localizedText", optional: true },
+      { name: "education", label: "Боловсрол", type: "education", help: "Төгссөн / суралцаж буй сургуулиуд. Дээрээс доош дарааллаар харагдана." },
       ...common,
     ],
-    summary: (r) => ({ title: String(r.name ?? ""), subtitle: mn(r.position) }),
+    summary: (r) => ({ title: String(r.name ?? ""), subtitle: mn(r.position), image: (r.image_url as string | null) || null }),
   },
   testimonials: {
     title: "Сэтгэгдэл",
@@ -168,6 +172,7 @@ export function emptyRow(config: ResourceConfig): Row {
         case "localizedList":
           return { mn: [], en: [], ko: [] };
         case "details":
+        case "education":
           return [];
         default:
           return f.optional ? null : "";
@@ -204,6 +209,18 @@ export function normalizeRow(config: ResourceConfig, row: Row): Row {
           label: d.label,
           value: isBlankLocalized(d.value) ? null : d.value,
         }));
+        break;
+      case "education":
+        out[f.name] = ((v as Education[] | null) ?? [])
+          .filter((e) => !isBlankLocalized(e.school))
+          .map((e) => ({
+            school: e.school,
+            field: isBlankLocalized(e.field) ? null : e.field,
+            degree: e.degree || null,
+            start: e.start?.trim() || null,
+            end: e.status === "in_progress" ? null : e.end?.trim() || null,
+            status: e.status,
+          }));
         break;
       case "text":
       case "url":

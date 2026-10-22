@@ -1,8 +1,9 @@
 "use client";
 
-import { ImageUp, Loader2, Plus, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, ImageUp, Loader2, Plus, Trash2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { locales, type Localized } from "@/i18n/config";
+import { degreeLabels, educationStatusLabels, type Degree, type Education, type EducationStatus } from "@/data/teachers";
 import { uploadImage } from "@/app/admin/actions";
 import Icon, { iconNames } from "../ui/Icon";
 import { Avatar, btn, input } from "./ui";
@@ -88,6 +89,87 @@ export function DetailsInput({ value, onChange }: { value: Detail[]; onChange: (
       ))}
       <button type="button" onClick={() => onChange([...value, { label: blank(), value: null }])} className={btn.small}>
         <Plus className="size-3.5" aria-hidden /> Мөр нэмэх
+      </button>
+    </div>
+  );
+}
+
+/** Багшийн боловсрол — сургууль, мэргэжил, зэрэг, он, төлөв */
+export function EducationInput({ value, onChange }: { value: Education[]; onChange: (v: Education[]) => void }) {
+  const set = (i: number, patch: Partial<Education>) => onChange(value.map((e, j) => (j === i ? { ...e, ...patch } : e)));
+  const move = (i: number, to: number) => {
+    const next = [...value];
+    [next[i], next[to]] = [next[to], next[i]];
+    onChange(next);
+  };
+  return (
+    <div className="space-y-3">
+      {value.map((e, i) => (
+        <div key={i} className="rounded-md border border-border bg-background p-3">
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-xs font-semibold text-muted">#{i + 1}</span>
+            <div className="flex gap-1.5">
+              <button type="button" onClick={() => move(i, i - 1)} disabled={i === 0} className={btn.small} aria-label="Дээш">
+                <ArrowUp className="size-3.5" aria-hidden />
+              </button>
+              <button type="button" onClick={() => move(i, i + 1)} disabled={i === value.length - 1} className={btn.small} aria-label="Доош">
+                <ArrowDown className="size-3.5" aria-hidden />
+              </button>
+              <button type="button" onClick={() => onChange(value.filter((_, j) => j !== i))} className={btn.small} aria-label="Устгах">
+                <Trash2 className="size-3.5" aria-hidden />
+              </button>
+            </div>
+          </div>
+          <p className="mb-1 text-xs text-muted">Сургууль</p>
+          <LocalizedInput value={e.school} onChange={(school) => set(i, { school })} />
+          <p className="mb-1 mt-3 text-xs text-muted">Мэргэжил / тэнхим (заавал биш)</p>
+          <LocalizedInput value={e.field} onChange={(field) => set(i, { field })} />
+          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <label className="block">
+              <span className="mb-1 block text-xs text-muted">Зэрэг</span>
+              <select value={e.degree ?? ""} onChange={(ev) => set(i, { degree: (ev.target.value || null) as Degree | null })} className={input}>
+                <option value="">—</option>
+                {(Object.keys(degreeLabels) as Degree[]).map((d) => (
+                  <option key={d} value={d}>
+                    {degreeLabels[d].mn}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="block">
+              <span className="mb-1 block text-xs text-muted">Төлөв</span>
+              <select value={e.status} onChange={(ev) => set(i, { status: ev.target.value as EducationStatus })} className={input}>
+                {(Object.keys(educationStatusLabels) as EducationStatus[]).map((s) => (
+                  <option key={s} value={s}>
+                    {educationStatusLabels[s].mn}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="block">
+              <span className="mb-1 block text-xs text-muted">Элссэн он</span>
+              <input inputMode="numeric" placeholder="2014" value={e.start ?? ""} onChange={(ev) => set(i, { start: ev.target.value })} className={input} />
+            </label>
+            <label className="block">
+              <span className="mb-1 block text-xs text-muted">Төгссөн он</span>
+              <input
+                inputMode="numeric"
+                placeholder={e.status === "in_progress" ? "одоо" : "2018"}
+                disabled={e.status === "in_progress"}
+                value={e.status === "in_progress" ? "" : (e.end ?? "")}
+                onChange={(ev) => set(i, { end: ev.target.value })}
+                className={`${input} disabled:opacity-50`}
+              />
+            </label>
+          </div>
+        </div>
+      ))}
+      <button
+        type="button"
+        onClick={() => onChange([...value, { school: blank(), field: null, degree: null, start: null, end: null, status: "completed" }])}
+        className={btn.small}
+      >
+        <Plus className="size-3.5" aria-hidden /> Сургууль нэмэх
       </button>
     </div>
   );

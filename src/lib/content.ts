@@ -7,7 +7,7 @@ import { partners as staticPartners, type Partner } from "@/data/partners";
 import { defaultSections, type Sections } from "@/data/sections";
 import { services as staticServices, upcomingServices as staticUpcoming, type Service, type ServiceDetail, type UpcomingService } from "@/data/services";
 import { site } from "@/data/site";
-import { teachers as staticTeachers, type Teacher } from "@/data/teachers";
+import { teachers as staticTeachers, type Education, type Teacher } from "@/data/teachers";
 import { testimonials as staticTestimonials, type Testimonial } from "@/data/testimonials";
 import { deepMerge } from "./merge";
 import { API_URL } from "./session-cookies";
@@ -31,7 +31,15 @@ type L = Localized;
 type CourseRow = { id: number; slug: string; glyph: string; name: L; level: L; description: L; duration: L | null; price: L | null; is_placeholder: boolean };
 type FaqRow = { question: L; answer: L };
 type PartnerRow = { id: number; name: L; city: L | null; type: L | null; logo_url: string | null; url: string | null };
-type TeacherRow = { name: string; image_url: string | null; position: L; specialty: L | null; experience: L | null; description: L | null };
+type TeacherRow = {
+  name: string;
+  image_url: string | null;
+  position: L;
+  specialty: L | null;
+  experience: L | null;
+  description: L | null;
+  education?: Education[];
+};
 type TestimonialRow = { name: string; context: L | null; quote: L; image_url: string | null };
 type ServiceRow = {
   slug: string;
@@ -102,6 +110,7 @@ export const getContent = cache(async (): Promise<Content> => {
       specialty: opt(t.specialty),
       experience: opt(t.experience),
       description: opt(t.description),
+      education: t.education ?? [],
     })),
     testimonials: data.testimonials.map((t) => ({ name: t.name, context: opt(t.context), quote: t.quote, image: opt(t.image_url) })),
     services: data.services

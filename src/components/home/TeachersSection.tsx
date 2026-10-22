@@ -1,6 +1,7 @@
 import Image from "next/image";
-import { UserRound } from "lucide-react";
+import { GraduationCap, UserRound } from "lucide-react";
 import { tr, type Locale } from "@/i18n/config";
+import { degreeLabels, educationStatusLabels, presentLabel, type Education } from "@/data/teachers";
 import { getContent } from "@/lib/content";
 import Card from "../ui/Card";
 import Container from "../ui/Container";
@@ -17,7 +18,7 @@ export default async function TeachersSection({ lang }: { lang: Locale }) {
           <ul className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {teachers.map((t, i) => (
               <li key={t.name} data-reveal style={{ ["--reveal-delay" as string]: `${i * 70}ms` }}>
-                <Card as="article" className="overflow-hidden">
+                <Card as="article" className="flex h-full flex-col overflow-hidden">
                   <div className="relative aspect-[4/5] bg-primary-soft">
                     {t.image ? (
                       <Image src={t.image} alt={t.name} fill sizes="(min-width:1280px) 25vw, (min-width:640px) 50vw, 100vw" className="object-cover" />
@@ -30,7 +31,8 @@ export default async function TeachersSection({ lang }: { lang: Locale }) {
                     <p className="text-sm font-medium text-accent">{tr(t.position, lang)}</p>
                     {t.specialty && <p className="mt-3 text-sm text-foreground">{tr(t.specialty, lang)}</p>}
                     {t.experience && <p className="mt-1 text-sm text-muted">{tr(t.experience, lang)}</p>}
-                    {t.description && <p className="mt-3 text-sm leading-relaxed text-muted">{tr(t.description, lang)}</p>}
+                    {t.education && t.education.length > 0 && <EducationList items={t.education} lang={lang} />}
+                    {t.description && <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-muted">{tr(t.description, lang)}</p>}
                   </div>
                 </Card>
               </li>
@@ -64,5 +66,36 @@ export default async function TeachersSection({ lang }: { lang: Locale }) {
         )}
       </Container>
     </section>
+  );
+}
+
+/** Боловсрол — сургууль, мэргэжил · зэрэг, он, төлөв */
+function EducationList({ items, lang }: { items: Education[]; lang: Locale }) {
+  return (
+    <ul className="mt-4 space-y-3 border-t border-border pt-4">
+      {items.map((e, i) => {
+        const years = [e.start, e.status === "in_progress" ? tr(presentLabel, lang) : e.end].filter(Boolean).join(" – ");
+        const meta = [e.field && tr(e.field, lang), e.degree && tr(degreeLabels[e.degree], lang)].filter(Boolean).join(" · ");
+        return (
+          <li key={i} className="flex gap-3">
+            <GraduationCap className="mt-0.5 size-4 shrink-0 text-accent" aria-hidden />
+            <div className="min-w-0 text-sm">
+              <p className="font-semibold leading-snug text-foreground">{tr(e.school, lang)}</p>
+              {meta && <p className="mt-0.5 leading-snug text-muted">{meta}</p>}
+              <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted">
+                {years && <span className="tabular-nums">{years}</span>}
+                <span
+                  className={`rounded-full px-2 py-0.5 font-medium ${
+                    e.status === "in_progress" ? "bg-accent-soft text-accent" : "bg-primary-soft text-primary"
+                  }`}
+                >
+                  {tr(educationStatusLabels[e.status], lang)}
+                </span>
+              </p>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
   );
 }

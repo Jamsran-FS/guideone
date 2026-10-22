@@ -6,7 +6,7 @@ import { useState, useTransition } from "react";
 import type { Localized } from "@/i18n/config";
 import { deleteRow, saveRow } from "@/app/admin/actions";
 import { normalizeRow, resources, type Field, type ResourceKey, type Row } from "@/lib/admin-resources";
-import { DetailsInput, IconSelect, ImageInput, LocalizedInput, LocalizedListInput } from "./fields";
+import { DetailsInput, EducationInput, IconSelect, ImageInput, LocalizedInput, LocalizedListInput } from "./fields";
 import { btn, input, label, Panel } from "./ui";
 
 export default function ResourceForm({ resource, initial }: { resource: ResourceKey; initial: Row }) {
@@ -91,6 +91,8 @@ function FieldInput({ field, value, onChange }: { field: Field; value: unknown; 
       return <LocalizedListInput value={value as Localized<string[]>} onChange={onChange} />;
     case "details":
       return <DetailsInput value={(value as never[]) ?? []} onChange={onChange} />;
+    case "education":
+      return <EducationInput value={(value as never[]) ?? []} onChange={onChange} />;
     case "image":
       return <ImageInput value={value as string | null} onChange={onChange} />;
     case "icon":

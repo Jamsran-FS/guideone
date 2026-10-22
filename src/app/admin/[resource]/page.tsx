@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, Plus } from "lucide-react";
+import { ArrowRight, ImageOff, Plus } from "lucide-react";
 import { api } from "@/lib/api";
 import { isResourceKey, resources, type ResourceConfig, type Row } from "@/lib/admin-resources";
 import { getAccessToken } from "@/lib/session";
@@ -29,11 +29,17 @@ export default async function ResourceList({ params }: PageProps<"/admin/[resour
       ) : (
         <Panel className="divide-y divide-border">
           {rows.map((row) => {
-            const { title, subtitle } = config.summary(row);
+            const { title, subtitle, image } = config.summary(row);
             return (
               <Link key={row.id} href={`/admin/${resource}/${row.id}`} className="flex items-center justify-between gap-4 px-5 py-4 hover:bg-background">
                 <span className="flex min-w-0 items-center gap-4">
                   <span className="w-8 shrink-0 font-mono text-xs text-muted">{row.sort_order}</span>
+                  {image !== undefined && (
+                    <span className="grid h-15 w-12 shrink-0 place-items-center overflow-hidden rounded-md border border-border bg-background">
+                      {/* eslint-disable-next-line @next/next/no-img-element -- админ preview */}
+                      {image ? <img src={image} alt="" className="size-full object-cover" /> : <ImageOff className="size-4 text-muted/50" aria-hidden />}
+                    </span>
+                  )}
                   <span className="min-w-0">
                     <span className="block truncate font-semibold text-foreground">{title || "(нэргүй)"}</span>
                     {subtitle && <span className="block truncate text-sm text-muted">{subtitle}</span>}
