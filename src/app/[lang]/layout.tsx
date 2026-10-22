@@ -16,7 +16,8 @@ import RevealObserver from "@/components/ui/RevealObserver";
 
 // Фонтуудыг @fontsource-оор өөр дээрээ host хийсэн (Google Fonts-оос хамааралгүй)
 
-export const dynamicParams = false;
+// dynamicParams=false энд тавьбал доорх /services/[slug], /partners/[id] зэрэг хуудсанд ч үйлчилж,
+// build-ийн дараа админаас нэмсэн контент 404 болно. Буруу хэлийг RootLayout дотор notFound()-оор шүүнэ.
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
 }
