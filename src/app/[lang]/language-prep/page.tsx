@@ -8,6 +8,7 @@ import { getContent } from "@/lib/content";
 import Button from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
+import { isExternalImage } from "@/lib/images";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/language-prep">): Promise<Metadata> {
   const { lang } = await params;
@@ -82,7 +83,7 @@ function SchoolCard({ school: s, lang }: { school: LanguageSchool; lang: Locale 
     <li className="overflow-hidden rounded-[24px] border border-border bg-background lg:grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]" data-reveal>
       <div className="relative aspect-[4/3] bg-primary-soft lg:aspect-auto lg:min-h-[420px]">
         {s.image ? (
-          <Image src={s.image} alt={tr(s.name, lang)} fill sizes="(min-width:1024px) 40vw, 100vw" className="object-cover" />
+          <Image src={s.image} unoptimized={isExternalImage(s.image)} alt={tr(s.name, lang)} fill sizes="(min-width:1024px) 40vw, 100vw" className="object-cover" />
         ) : (
           <Languages className="absolute inset-0 m-auto size-14 text-primary/20" aria-hidden />
         )}
@@ -92,7 +93,7 @@ function SchoolCard({ school: s, lang }: { school: LanguageSchool; lang: Locale 
         <div className="flex items-center gap-4">
           {s.logo && (
             <span className="relative size-14 shrink-0 overflow-hidden rounded-xl bg-white ring-1 ring-border">
-              <Image src={s.logo} alt="" fill sizes="56px" className="object-contain p-1.5" />
+              <Image src={s.logo} unoptimized={isExternalImage(s.logo)} alt="" fill sizes="56px" className="object-contain p-1.5" />
             </span>
           )}
           <h2 className="font-display text-2xl font-bold leading-tight text-foreground sm:text-3xl">{tr(s.name, lang)}</h2>

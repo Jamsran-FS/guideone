@@ -28,7 +28,7 @@ export function LocalizedInput({
     <div className="grid gap-2 md:grid-cols-3">
       {locales.map((lang) => (
         <div key={lang} className="relative">
-          <span className={`${langTag} ${multiline ? "top-[13px]" : "top-1/2 -translate-y-1/2"}`}>{langLabel[lang]}</span>
+          <span className={`${langTag} ${multiline ? "top-[13px]" : "inset-y-0 flex items-center"}`}>{langLabel[lang]}</span>
           {multiline ? (
             <textarea
               lang={lang}

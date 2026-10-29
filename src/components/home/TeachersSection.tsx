@@ -6,6 +6,7 @@ import { getContent } from "@/lib/content";
 import Card from "../ui/Card";
 import Container from "../ui/Container";
 import SectionHeading from "../ui/SectionHeading";
+import { isExternalImage } from "@/lib/images";
 
 export default async function TeachersSection({ lang }: { lang: Locale }) {
   const { teachers, teachersCopy } = await getContent();
@@ -21,7 +22,7 @@ export default async function TeachersSection({ lang }: { lang: Locale }) {
                 <Card as="article" className="flex h-full flex-col overflow-hidden">
                   <div className="relative aspect-[4/5] bg-primary-soft">
                     {t.image ? (
-                      <Image src={t.image} alt={t.name} fill sizes="(min-width:1280px) 25vw, (min-width:640px) 50vw, 100vw" className="object-cover" />
+                      <Image src={t.image} unoptimized={isExternalImage(t.image)} alt={t.name} fill sizes="(min-width:1280px) 25vw, (min-width:640px) 50vw, 100vw" className="object-cover" />
                     ) : (
                       <UserRound className="absolute inset-0 m-auto size-16 text-primary/25" aria-hidden />
                     )}

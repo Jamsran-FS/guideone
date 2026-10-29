@@ -9,6 +9,7 @@ import { tel } from "@/data/site";
 import { getContent } from "@/lib/content";
 import Button from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
+import { isExternalImage } from "@/lib/images";
 
 // Админ шинэ сургууль нэмбэл build-гүйгээр шууд нээгдэнэ
 export const dynamicParams = true;
@@ -56,7 +57,7 @@ export default async function PartnerPage({ params }: PageProps<"/[lang]/partner
             <div className={p.image ? "lg:col-span-6" : "lg:col-span-8"}>
               <div className="flex items-center gap-4">
                 <span className="relative grid size-16 shrink-0 place-items-center overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-border">
-                  {p.logo ? <Image src={p.logo} alt="" fill sizes="64px" className="object-contain p-2" /> : <School className="size-7 text-accent" aria-hidden />}
+                  {p.logo ? <Image src={p.logo} unoptimized={isExternalImage(p.logo)} alt="" fill sizes="64px" className="object-contain p-2" /> : <School className="size-7 text-accent" aria-hidden />}
                 </span>
                 {meta && <p className="text-sm font-medium text-accent">{meta}</p>}
               </div>
@@ -70,7 +71,7 @@ export default async function PartnerPage({ params }: PageProps<"/[lang]/partner
             </div>
             {p.image && (
               <div className="relative aspect-[4/3] overflow-hidden rounded-[24px] border border-border lg:col-span-6">
-                <Image src={p.image} alt={tr(p.name, lang)} fill priority sizes="(min-width:1024px) 45vw, 100vw" className="object-cover" />
+                <Image src={p.image} unoptimized={isExternalImage(p.image)} alt={tr(p.name, lang)} fill priority sizes="(min-width:1024px) 45vw, 100vw" className="object-cover" />
               </div>
             )}
           </div>

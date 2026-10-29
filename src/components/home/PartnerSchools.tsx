@@ -7,6 +7,7 @@ import { getContent } from "@/lib/content";
 import Button from "../ui/Button";
 import Container from "../ui/Container";
 import SectionHeading from "../ui/SectionHeading";
+import { isExternalImage } from "@/lib/images";
 
 /** Солонгос дахь хамтрагч сургуулиуд — жагсаалт хоосон бол "удахгүй" төлөв */
 export default async function PartnerSchools({ lang }: { lang: Locale }) {
@@ -30,13 +31,13 @@ export default async function PartnerSchools({ lang }: { lang: Locale }) {
                   <>
                     <span className="relative block aspect-[16/9] overflow-hidden bg-accent-soft">
                       {p.image ? (
-                        <Image src={p.image} alt="" fill sizes="(min-width:1024px) 30vw, (min-width:640px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:scale-[1.03]" />
+                        <Image src={p.image} unoptimized={isExternalImage(p.image)} alt="" fill sizes="(min-width:1024px) 30vw, (min-width:640px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:scale-[1.03]" />
                       ) : (
                         <School className="absolute inset-0 m-auto size-10 text-accent/30" aria-hidden />
                       )}
                       {p.logo && (
                         <span className="absolute bottom-3 left-3 size-12 overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5">
-                          <Image src={p.logo} alt="" fill sizes="48px" className="object-contain p-1.5" />
+                          <Image src={p.logo} unoptimized={isExternalImage(p.logo)} alt="" fill sizes="48px" className="object-contain p-1.5" />
                         </span>
                       )}
                     </span>
