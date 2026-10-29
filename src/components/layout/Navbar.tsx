@@ -4,13 +4,11 @@ import Link from "next/link";
 import {
   ArrowUpRight,
   ChevronDown,
-  CircleHelp,
   GraduationCap,
   Info,
   Languages,
   LayoutGrid,
   Menu,
-  MessageSquareQuote,
   School,
   UserRound,
   Users,
@@ -135,8 +133,6 @@ const navIcons: Record<string, LucideIcon> = {
   partners: School,
   language: Languages,
   teachers: Users,
-  testimonials: MessageSquareQuote,
-  faq: CircleHelp,
 };
 
 function NavIcon({ id }: { id: string }) {

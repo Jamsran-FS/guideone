@@ -4,7 +4,7 @@ import { CheckCircle2, Loader2, Plus, Save, Trash2 } from "lucide-react";
 import { useState, useTransition } from "react";
 import { saveSection } from "@/app/admin/actions";
 import type { defaultSections } from "@/data/sections";
-import { mapEmbedUrl } from "@/data/site";
+import { emailList, mapEmbedUrl } from "@/data/site";
 import { LocalizedInput } from "./fields";
 import { btn, input, label, Panel } from "./ui";
 
@@ -30,7 +30,7 @@ export default function ContactInfoForm({ initial }: { initial: SiteSettings }) 
     const value: SiteSettings = {
       ...site,
       phones: site.phones.map((p) => p.trim()).filter(Boolean),
-      email: site.email?.trim() || null,
+      email: emailList(site.email).join(", ") || null,
       mapQuery: site.mapQuery.trim(),
       socials: Object.fromEntries(Object.entries(site.socials).map(([k, v]) => [k, v.trim()])) as SiteSettings["socials"],
     };
@@ -71,8 +71,8 @@ export default function ContactInfoForm({ initial }: { initial: SiteSettings }) 
           </div>
         </Row>
 
-        <Row title="И-мэйл" optional help="Хоосон бол сайт дээр харагдахгүй.">
-          <input type="email" value={site.email ?? ""} placeholder="info@guideone.mn" onChange={(e) => set("email", e.target.value)} className={`${input} max-w-md`} />
+        <Row title="И-мэйл" optional help="Хэд хэдэн хаягийг таслалаар тусгаарлана. Хоосон бол сайт дээр харагдахгүй.">
+          <input type="email" multiple value={site.email ?? ""} placeholder="info@guideone.mn" onChange={(e) => set("email", e.target.value)} className={`${input} max-w-md`} />
         </Row>
 
         <Row title="Facebook" optional help="Facebook хуудасны бүтэн холбоос. Хоосон бол харагдахгүй.">

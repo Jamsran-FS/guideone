@@ -1,6 +1,6 @@
 import { ArrowUpRight, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { tr, type Locale } from "@/i18n/config";
-import { mapEmbedUrl, mapLinkUrl, tel } from "@/data/site";
+import { emailList, mapEmbedUrl, mapLinkUrl, tel } from "@/data/site";
 import { getContent } from "@/lib/content";
 import Container from "../ui/Container";
 import { FacebookIcon } from "../ui/SocialIcons";
@@ -52,19 +52,19 @@ export default async function ContactCTA({ lang }: { lang: Locale }) {
                       </a>
                     </li>
                   ))}
-                  {site.email && (
-                    <li>
+                  {emailList(site.email).map((email) => (
+                    <li key={email}>
                       <a
-                        href={`mailto:${site.email}`}
+                        href={`mailto:${email}`}
                         className="inline-flex items-center gap-3 rounded-full bg-white/10 py-2 pl-2 pr-5 font-semibold ring-1 ring-inset ring-white/15 transition hover:bg-white hover:text-primary"
                       >
                         <span className="grid size-9 place-items-center rounded-full bg-white/15">
                           <Mail className="size-4" aria-hidden />
                         </span>
-                        {site.email}
+                        {email}
                       </a>
                     </li>
-                  )}
+                  ))}
                   {site.socials.facebook && (
                     <li>
                       <a

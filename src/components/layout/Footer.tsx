@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { tr, type Locale } from "@/i18n/config";
-import { footerHelp, footerNavigation, localHref, tel } from "@/data/site";
+import { emailList, footerHelp, footerNavigation, localHref, tel } from "@/data/site";
 import { ui } from "@/data/home";
 import { getContent } from "@/lib/content";
 import BackToTop from "../ui/BackToTop";
@@ -62,11 +62,11 @@ export default async function Footer({ lang }: { lang: Locale }) {
             <div>
               <h2 className={heading}>{tr(footerCopy.contact, lang)}</h2>
               <address className="mt-5 space-y-3 not-italic">
-                {site.email && (
-                  <a href={`mailto:${site.email}`} className={`flex items-center gap-2.5 ${link}`}>
-                    <Mail className="size-4 shrink-0 opacity-80" aria-hidden /> {site.email}
+                {emailList(site.email).map((email) => (
+                  <a key={email} href={`mailto:${email}`} className={`flex items-center gap-2.5 ${link}`}>
+                    <Mail className="size-4 shrink-0 opacity-80" aria-hidden /> {email}
                   </a>
-                )}
+                ))}
                 {site.phones.map((p) => (
                   <a key={p} href={tel(p)} className={`flex items-center gap-2.5 ${link}`}>
                     <Phone className="size-4 shrink-0 opacity-80" aria-hidden /> {p}

@@ -45,6 +45,9 @@ export const site = {
 
 export const tel = (p: string) => `tel:${p.replace(/[\s-]/g, "")}`;
 
+/** "a@x.mn, b@x.mn" → ["a@x.mn", "b@x.mn"] (админ таслалаар хэд хэдэн хаяг бичиж болно) */
+export const emailList = (s: string | null | undefined) => (s ?? "").split(/[\s,;]+/).filter(Boolean);
+
 export const mapEmbedUrl = (q: string, lang: string) =>
   `https://www.google.com/maps?q=${encodeURIComponent(q)}&hl=${lang}&z=16&output=embed`;
 export const mapLinkUrl = (q: string) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
@@ -111,8 +114,6 @@ export const navigation: NavLink[] = [
   { id: "partners", label: { mn: "Хамтрагч сургууль", en: "Partner schools", ko: "협력 학교" }, href: "#partners" },
   { id: "language", label: { mn: "Хэлний бэлтгэл", en: "Language programs", ko: "어학연수" }, href: "/language-prep" },
   { id: "teachers", label: { mn: "Багш нар", en: "Teachers", ko: "선생님" }, href: "#teachers" },
-  { id: "testimonials", label: { mn: "Сэтгэгдэл", en: "Reviews", ko: "후기" }, href: "#testimonials" },
-  { id: "faq", label: { mn: "Түгээмэл асуулт", en: "FAQ", ko: "자주 묻는 질문" }, href: "#faq" },
 ];
 
 export const footerHelp: { label: Localized; href: string }[] = [
@@ -130,7 +131,8 @@ export const footerNavigation: { label: Localized; href: string }[] = [
   { label: { mn: "Хамтрагч сургууль", en: "Partner schools", ko: "협력 학교" }, href: "#partners" },
   { label: { mn: "Хэлний бэлтгэл", en: "Language programs", ko: "어학연수" }, href: "/language-prep" },
   { label: { mn: "Багш нар", en: "Teachers", ko: "선생님" }, href: "#teachers" },
-  { label: { mn: "FAQ", en: "FAQ", ko: "FAQ" }, href: "#faq" },
+  { label: { mn: "Сэтгэгдэл", en: "Reviews", ko: "후기" }, href: "#testimonials" },
+  { label: { mn: "Түгээмэл асуулт", en: "FAQ", ko: "자주 묻는 질문" }, href: "#faq" },
   { label: { mn: "Холбоо барих", en: "Contact", ko: "문의" }, href: "#contact" },
 ];
 
