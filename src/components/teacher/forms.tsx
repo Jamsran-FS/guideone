@@ -9,6 +9,7 @@ import {
   deleteAnnouncement,
   deleteExam,
   deleteMaterial,
+  materialUploadUrl,
   saveScores,
   type TeacherResult,
 } from "@/app/teacher/actions";
@@ -22,7 +23,8 @@ function useAction() {
   const run = (fn: () => Promise<TeacherResult>, success: string, onOk?: () => void) =>
     startTransition(async () => {
       setMessage(null);
-      const result = await fn();
+      // Сүлжээ/серверийн алдаа хуудсыг унагаахгүй — мессежээр харуулна
+      const result = await fn().catch((): TeacherResult => ({ ok: false, error: "Алдаа гарлаа. Дахин оролдоно уу." }));
       setMessage(result.ok ? { ok: true, text: success } : { ok: false, text: result.error });
       if (result.ok) onOk?.();
     });
@@ -39,6 +41,8 @@ function Status({ message }: { message: { ok: boolean; text: string } | null }) 
   );
 }
 
+const MAX_FILE_BYTES = 20 * 1024 * 1024;
+
 export function MaterialForm({ groupId }: { groupId: number }) {
   const formRef = useRef<HTMLFormElement>(null);
   const { pending, message, run } = useAction();
@@ -49,7 +53,23 @@ export function MaterialForm({ groupId }: { groupId: number }) {
       onSubmit={(e) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
-        run(() => addMaterial(groupId, data), "Материал нэмэгдлээ.", () => formRef.current?.reset());
+        run(async () => {
+          const file = data.get("file");
+          if (file instanceof File && file.size > 0) {
+            if (file.size > MAX_FILE_BYTES) return { ok: false, error: "Файлын хэмжээ 20MB-аас ихгүй байна." };
+            const upload = await materialUploadUrl(groupId, file.name);
+            if (!upload.ok) return upload;
+            const res = await fetch(upload.url, {
+              method: "PUT",
+              body: file,
+              headers: { "content-type": file.type || "application/octet-stream", "x-upsert": "false" },
+            });
+            if (!res.ok) return { ok: false, error: "Файл upload хийж чадсангүй. Төрөл нь зөвшөөрөгдсөн эсэхийг шалгана уу." };
+            data.set("filePath", upload.path);
+            data.set("fileName", file.name);
+          }
+          return addMaterial(groupId, data);
+        }, "Материал нэмэгдлээ.", () => formRef.current?.reset());
       }}
       className="space-y-4"
     >

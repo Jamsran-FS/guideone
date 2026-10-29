@@ -18,10 +18,26 @@ async function run(groupId: number, fn: (token: string | null) => Promise<unknow
   return { ok: true };
 }
 
-/** formData: title, description, kind, linkUrl, file (заавал биш) */
+/**
+ * Файлыг хөтчөөс Supabase руу шууд upload хийх холбоос. Server action-оор файл дамжуулбал
+ * Vercel-ийн 4.5MB хязгаарт тулж хуудас унадаг.
+ */
+export async function materialUploadUrl(groupId: number, fileName: string) {
+  try {
+    const data = await api<{ url: string; path: string }>(`/api/teacher/groups/${groupId}/materials/upload-url`, {
+      method: "POST",
+      token: await getAccessToken(),
+      json: { fileName },
+    });
+    return { ok: true as const, ...data };
+  } catch (e) {
+    return { ok: false as const, error: e instanceof Error ? e.message : "Алдаа гарлаа." };
+  }
+}
+
+/** formData: title, description, kind, linkUrl, filePath + fileName (materialUploadUrl-аар upload хийсэн файл) */
 export async function addMaterial(groupId: number, formData: FormData) {
-  const file = formData.get("file");
-  if (file instanceof File && file.size === 0) formData.delete("file");
+  formData.delete("file");
   if (!String(formData.get("linkUrl") ?? "").trim()) formData.delete("linkUrl");
   return run(groupId, (token) => api(`/api/teacher/groups/${groupId}/materials`, { method: "POST", token, form: formData }));
 }

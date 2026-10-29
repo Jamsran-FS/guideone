@@ -71,7 +71,7 @@ export default function Navbar({ lang }: { lang: Locale }) {
       </a>
 
       <div
-        className={`mx-auto flex h-[68px] w-full max-w-[1320px] items-center justify-between gap-4 rounded-full border bg-white/95 pl-4 pr-2.5 backdrop-blur-md transition-shadow duration-300 sm:pl-6 ${
+        className={`mx-auto flex h-[68px] w-full max-w-[1320px] items-center justify-between gap-3 2xl:max-w-[1440px] rounded-full border bg-white/95 pl-4 pr-2.5 backdrop-blur-md transition-shadow duration-300 sm:pl-6 ${
           scrolled ? "border-border shadow-[0_14px_40px_-16px_rgb(10_74_48/0.28)]" : "border-white/80 shadow-[0_10px_30px_-18px_rgb(10_74_48/0.25)]"
         }`}
       >
@@ -86,7 +86,7 @@ export default function Navbar({ lang }: { lang: Locale }) {
                 ) : (
                   <Link
                     href={localHref(lang, item.href)}
-                    className="flex items-center gap-2 whitespace-nowrap rounded-full px-3 py-2 text-[14.5px] font-medium text-foreground/80 transition-colors hover:bg-accent-soft hover:text-accent"
+                    className="flex items-center gap-2 whitespace-nowrap rounded-full px-2.5 py-2 text-[14.5px] 2xl:px-3 font-medium text-foreground/80 transition-colors hover:bg-accent-soft hover:text-accent"
                   >
                     <NavIcon id={item.id} />
                     {tr(item.label, lang)}
@@ -164,7 +164,7 @@ function ServicesMenu({ item, lang }: { item: NavLink; lang: Locale }) {
         aria-expanded={show}
         aria-haspopup="true"
         onClick={() => setShow((v) => !v)}
-        className={`flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-2 text-[14.5px] font-medium transition-colors hover:bg-accent-soft hover:text-accent ${
+        className={`flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-2 text-[14.5px] 2xl:px-3 font-medium transition-colors hover:bg-accent-soft hover:text-accent ${
           show ? "bg-accent-soft text-accent" : "text-foreground/80"
         }`}
       >
