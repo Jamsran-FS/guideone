@@ -174,3 +174,7 @@ export async function updateUser(id: string, patch: UserPatch) {
   if (result.ok) revalidatePath("/admin", "layout");
   return result;
 }
+
+export async function setUserPassword(id: string, password: string) {
+  return run((token) => api(`/api/admin/users/${id}/password`, { method: "PUT", token, json: { password } }));
+}

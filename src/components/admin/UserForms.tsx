@@ -1,9 +1,9 @@
 "use client";
 
-import { CheckCircle2, Eye, EyeOff, Loader2, Save, UserPlus } from "lucide-react";
+import { CheckCircle2, Eye, EyeOff, KeyRound, Loader2, Save, UserPlus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { createUser, updateUser, type NewUserInput, type UserPatch } from "@/app/admin/actions";
+import { createUser, setUserPassword, updateUser, type NewUserInput, type UserPatch } from "@/app/admin/actions";
 import type { Profile, Role } from "@/lib/session-cookies";
 import { AvatarInput } from "./fields";
 import { btn, input, label, Panel } from "./ui";
@@ -198,6 +198,83 @@ export function UserEditForm({ user, isSelf }: { user: Profile; isSelf: boolean 
         <button type="submit" disabled={pending} className={btn.primary}>
           {pending ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <Save className="size-4" aria-hidden />}
           Хадгалах
+        </button>
+        <Status message={message} />
+      </div>
+    </form>
+  );
+}
+
+/** Хэрэглэгчийн нууц үгийг солино — шинэ нууц үгийг хэрэглэгчид дамжуулна */
+export function PasswordForm({ userId, isSelf }: { userId: string; isSelf: boolean }) {
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [show, setShow] = useState(false);
+  const [message, setMessage] = useState<Message>(null);
+  const [pending, startTransition] = useTransition();
+
+  return (
+    <form
+      id="password"
+      className="mt-8 scroll-mt-6"
+      onSubmit={(e) => {
+        e.preventDefault();
+        setMessage(null);
+        if (password !== confirm) return setMessage({ ok: false, text: "Нууц үг таарахгүй байна." });
+        startTransition(async () => {
+          const result = await setUserPassword(userId, password);
+          if (result.ok) {
+            setPassword("");
+            setConfirm("");
+          }
+          setMessage(
+            result.ok
+              ? { ok: true, text: isSelf ? "Нууц үг солигдлоо." : "Нууц үг солигдлоо. Шинэ нууц үгийг хэрэглэгчид дамжуулна уу." }
+              : { ok: false, text: result.error },
+          );
+        });
+      }}
+    >
+      <h2 className="mb-3 flex items-center gap-2 font-display text-lg font-bold text-foreground">
+        <KeyRound className="size-5 text-accent" aria-hidden /> Нууц үг солих
+      </h2>
+      <Panel className="grid gap-5 p-5 sm:grid-cols-2 sm:p-6">
+        {(
+          [
+            ["Шинэ нууц үг (8+ тэмдэгт)", password, setPassword],
+            ["Шинэ нууц үг давтах", confirm, setConfirm],
+          ] as const
+        ).map(([text, value, onChange]) => (
+          <label key={text} className={label}>
+            {text}
+            <span className="relative mt-1.5 block">
+              <input
+                type={show ? "text" : "password"}
+                required
+                minLength={8}
+                maxLength={72}
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                autoComplete="new-password"
+                className={`${input} pr-10`}
+              />
+              <button
+                type="button"
+                onClick={() => setShow((v) => !v)}
+                aria-label={show ? "Нууц үг нуух" : "Нууц үг харуулах"}
+                className="absolute inset-y-0 right-2 grid place-items-center text-muted hover:text-foreground"
+              >
+                {show ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+              </button>
+            </span>
+          </label>
+        ))}
+      </Panel>
+
+      <div className="mt-5 flex flex-wrap items-center gap-3">
+        <button type="submit" disabled={pending} className={btn.primary}>
+          {pending ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <KeyRound className="size-4" aria-hidden />}
+          Нууц үг солих
         </button>
         <Status message={message} />
       </div>

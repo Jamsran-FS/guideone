@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { api } from "@/lib/api";
 import { getAccessToken, getCurrentUser } from "@/lib/session";
 import type { Profile } from "@/lib/session-cookies";
-import { NewUserForm, UserEditForm } from "@/components/admin/UserForms";
+import { NewUserForm, PasswordForm, UserEditForm } from "@/components/admin/UserForms";
 import { PageHeader } from "@/components/admin/ui";
 
 export default async function EditUser({ params }: PageProps<"/admin/users/[id]">) {
@@ -29,6 +29,7 @@ export default async function EditUser({ params }: PageProps<"/admin/users/[id]"
       <BackLink />
       <PageHeader title={user.full_name || user.email || "Хэрэглэгч"} description={user.email ?? undefined} />
       <UserEditForm key={user.id} user={user} isSelf={user.id === me?.id} />
+      <PasswordForm key={`${user.id}-password`} userId={user.id} isSelf={user.id === me?.id} />
     </>
   );
 }

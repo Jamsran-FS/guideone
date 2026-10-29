@@ -7,7 +7,7 @@ import type { Localized } from "@/i18n/config";
 export const site = {
   name: "GuideOne",
   /** Production домэйн — .env дээр NEXT_PUBLIC_SITE_URL тохируулна */
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/+$/, ""),
 
   address: {
     mn: "Улаанбаатар, Сүхбаатар дүүрэг, 4-р хороо, GD Plaza, 7 давхар, 701 тоот",

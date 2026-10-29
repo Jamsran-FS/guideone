@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Pencil, UserPlus } from "lucide-react";
+import { KeyRound, Pencil, UserPlus } from "lucide-react";
 import { api } from "@/lib/api";
 import { getAccessToken, getCurrentUser } from "@/lib/session";
 import type { Profile } from "@/lib/session-cookies";
@@ -56,10 +56,15 @@ export default async function Users() {
                   <td className="px-5 py-4">
                     <RoleSelect id={u.id} role={u.role} disabled={u.id === me?.id} />
                   </td>
-                  <td className="px-5 py-4 text-right">
-                    <Link href={`/admin/users/${u.id}`} className={btn.small}>
-                      <Pencil className="size-3.5" aria-hidden /> Засах
-                    </Link>
+                  <td className="px-5 py-4">
+                    <div className="flex justify-end gap-2">
+                      <Link href={`/admin/users/${u.id}#password`} className={btn.small}>
+                        <KeyRound className="size-3.5" aria-hidden /> Нууц үг
+                      </Link>
+                      <Link href={`/admin/users/${u.id}`} className={btn.small}>
+                        <Pencil className="size-3.5" aria-hidden /> Засах
+                      </Link>
+                    </div>
                   </td>
                 </tr>
               ))}
