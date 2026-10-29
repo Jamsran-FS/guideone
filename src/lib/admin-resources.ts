@@ -118,6 +118,40 @@ export const resources = {
       image: (r.image_url as string | null) || (r.logo_url as string | null) || null,
     }),
   },
+  "language-schools": {
+    title: "Хэлний бэлтгэл",
+    singular: "сургууль",
+    description: "Сайтын \"Хэлний бэлтгэл\" хуудсанд харагдах хэлний бэлтгэлийн сургуулиуд.",
+    fields: [
+      { name: "name", label: "Нэр", type: "localized" },
+      { name: "logo_url", label: "Лого", type: "image", optional: true },
+      { name: "image_url", label: "Сургуулийн зураг", type: "image", optional: true, help: "Босоо эсвэл дөрвөлжин зураг тохиромжтой." },
+      { name: "city", label: "Байршил", type: "localized", optional: true, help: "Жишээ нь: Инчон хот, Сөүл-Гуяан" },
+      {
+        name: "visa_type",
+        label: "Визний төрөл",
+        type: "select",
+        optional: true,
+        options: [
+          { value: "", label: "— Заахгүй" },
+          { value: "e_visa", label: "Цахим визтэй" },
+          { value: "regular", label: "Цахим бус визтэй" },
+        ],
+      },
+      { name: "tuition", label: "Сургалтын төлбөр", type: "localized", optional: true, help: "Жишээ нь: 1,000,000₩" },
+      { name: "headline", label: "Онцлох мөр", type: "localized", optional: true, help: "Том, тодоор харагдана. Жишээ нь: Хэлний бэлтгэл + Бакалавр = 4 жил" },
+      { name: "highlights", label: "Давуу талууд", type: "localizedList", help: "Мөр бүрд нэг. Жишээ нь: Эхний элсэгч 100% тэтгэлэгтэй" },
+      { name: "scholarships", label: "Тэтгэлэг", type: "details", columns: ["Нөхцөл", "Хөнгөлөлт"], help: "Жишээ нь: TOPIK 3 → 40%, IELTS 7 → 100%" },
+      { name: "description", label: "Нэмэлт тайлбар", type: "localizedText", optional: true },
+      { name: "url", label: "Вэбсайт", type: "url", optional: true },
+      ...common,
+    ],
+    summary: (r) => ({
+      title: mn(r.name),
+      subtitle: [mn(r.city), r.visa_type === "e_visa" ? "Цахим виз" : r.visa_type === "regular" ? "Цахим бус виз" : ""].filter(Boolean).join(" · "),
+      image: (r.image_url as string | null) || (r.logo_url as string | null) || null,
+    }),
+  },
   teachers: {
     title: "Багш нар",
     singular: "багш",
@@ -223,6 +257,9 @@ export function normalizeRow(config: ResourceConfig, row: Row): Row {
           label: d.label,
           value: isBlankLocalized(d.value) ? null : d.value,
         }));
+        break;
+      case "select":
+        out[f.name] = f.optional && !v ? null : v;
         break;
       case "education":
         out[f.name] = ((v as Education[] | null) ?? [])

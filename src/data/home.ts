@@ -71,35 +71,154 @@ export const hero = {
   } as L,
 };
 
-export const intro = {
-  eyebrow: { mn: "GuideOne", en: "GuideOne", ko: "GuideOne" } as L,
-  title: { mn: "GuideOne гэж юу вэ?", en: "What is GuideOne?", ko: "GuideOne은 어떤 곳인가요?" } as L,
+export const about = {
+  eyebrow: { mn: "Бидний тухай", en: "About us", ko: "회사 소개" } as L,
+  title: { mn: "Бидний тухай", en: "About us", ko: "회사 소개" } as L,
+  /** Догол мөрүүдийг хоосон мөрөөр тусгаарлана */
   text: {
-    mn: "GuideOne нь Солонгос хэл сурах, БНСУ-д суралцах болон Солонгостой холбоотой хэрэгцээнд зориулсан боловсрол, зөвлөгөөний үйлчилгээг нэг дороос хүргэхийг зорьдог. Бид Солонгос дахь хамтран ажилладаг сургуулиуд руугаа суралцагчдыг зуучилдаг.",
-    en: "GuideOne aims to bring together education and advisory services for learning Korean, studying in South Korea and other Korea-related needs — in one place. We place students at our partner schools in Korea.",
-    ko: "GuideOne은 한국어 학습, 한국 유학, 그리고 한국과 관련된 다양한 필요를 위한 교육·상담 서비스를 한 곳에서 제공하는 것을 목표로 합니다. 한국의 협력 학교로 학생들의 유학을 연결합니다.",
+    mn: "Guide One ХХК нь 2018 онд үүссэн, Бүгд Найрамдах Солонгос Улсад суралцах зорилготой иргэдэд солонгос хэлний сургалт болон зуучлалын үйлчилгээ үзүүлдэг компани юм.\n\nБид хэл сурахаас эхлээд сургууль, ажлын байр сонгох, бичиг баримт бүрдүүлэх, виз мэдүүлэх хүртэлх замыг нэг дороос хөтөлдөг.",
+    en: "Guide One LLC was founded in 2018 and provides Korean language courses and placement services for people who plan to study in the Republic of Korea.\n\nFrom learning the language to choosing a school or job, preparing documents and applying for a visa, we guide you through the whole journey in one place.",
+    ko: "Guide One LLC는 2018년에 설립되어, 대한민국 유학을 목표로 하는 분들께 한국어 교육과 유학 연계 서비스를 제공하는 회사입니다.\n\n언어 학습부터 학교·일자리 선택, 서류 준비, 비자 신청까지의 모든 과정을 한 곳에서 안내합니다.",
   } as L,
-  items: [
+  stats: [
+    { value: "2018", label: { mn: "онд үүсгэн байгуулагдсан", en: "Year founded", ko: "설립 연도" } as L },
+    { value: "5", label: { mn: "Үйлчилгээний чиглэл", en: "Service areas", ko: "서비스 분야" } as L },
+    { value: "5", label: { mn: "Алхам алхмаар ойлгомжтой үйл явц", en: "Clear step-by-step process", ko: "단계별로 명확한 진행 과정" } as L },
+  ],
+  missionTitle: { mn: "Алсын хараа, эрхэм зорилго", en: "Vision and mission", ko: "비전과 미션" } as L,
+  vision: {
+    title: { mn: "Алсын хараа", en: "Vision", ko: "비전" } as L,
+    text: {
+      mn: "Монгол Солонгос хоёр орныг холбосон хэл, боловсрол, зуучлалын чиглэлд хамгийн их итгэл даасан байгууллага болох.",
+      en: "To be the most trusted organization connecting Mongolia and Korea through language, education and placement services.",
+      ko: "언어·교육·유학 연계 분야에서 몽골과 한국을 잇는 가장 신뢰받는 기관이 되는 것.",
+    } as L,
+  },
+  mission: {
+    title: { mn: "Эрхэм зорилго", en: "Mission", ko: "미션" } as L,
+    text: {
+      mn: "Солонгост сурах, ажиллах хүсэлтэй хүн бүрт чанартай хэлний бэлтгэл, үнэн зөв мэдээлэл, ил тод зуучлалаар дамжуулан зорилгодоо хүрэхэд нь туслах.",
+      en: "To help everyone who wants to study or work in Korea reach their goals through quality language preparation, accurate information and transparent placement.",
+      ko: "한국에서 공부하거나 일하고자 하는 모든 분이 양질의 언어 준비, 정확한 정보, 투명한 연계를 통해 목표를 이루도록 돕는 것.",
+    } as L,
+  },
+  valuesTitle: { mn: "Бидний үнэт зүйлс", en: "Our values", ko: "우리의 가치" } as L,
+  values: [
     {
-      icon: "Languages",
-      title: { mn: "Солонгос хэл", en: "Korean language", ko: "한국어" } as L,
-      text: { mn: "Анхан шатнаас ахисан түвшин хүртэлх сургалт", en: "Courses from beginner to advanced", ko: "초급부터 고급까지의 강좌" } as L,
+      icon: "Eye",
+      title: { mn: "Ил тод байдал", en: "Transparency", ko: "투명성" } as L,
+      text: {
+        mn: "Зардал, хугацаа, шаардлагыг эхнээс нь тодорхой хэлнэ.",
+        en: "We are clear about costs, timelines and requirements from the start.",
+        ko: "비용, 기간, 요건을 처음부터 명확하게 안내합니다.",
+      } as L,
     },
     {
-      icon: "MessagesSquare",
-      title: { mn: "Суралцах зөвлөгөө", en: "Study advice", ko: "유학 상담" } as L,
-      text: { mn: "Зорилгоо тодорхойлж, зөв сонголт хийхэд", en: "Clarify your goals and choose well", ko: "목표를 정하고 올바른 선택을 하도록" } as L,
+      icon: "Handshake",
+      title: { mn: "Хариуцлага", en: "Responsibility", ko: "책임감" } as L,
+      text: {
+        mn: "Үйлчлүүлэгч бүрийн асуудлыг өөрийн асуудал шиг авч үзнэ.",
+        en: "We treat every client's situation as if it were our own.",
+        ko: "모든 고객의 일을 우리 일처럼 여깁니다.",
+      } as L,
+    },
+    {
+      icon: "Scale",
+      title: { mn: "Хууль ёс", en: "Legality", ko: "준법" } as L,
+      text: {
+        mn: "Хоёр улсын хууль тогтоомжид нийцсэн аргаар ажиллана.",
+        en: "We work in full compliance with the laws of both countries.",
+        ko: "양국의 법률을 준수하는 방식으로 일합니다.",
+      } as L,
+    },
+    {
+      icon: "Star",
+      title: { mn: "Чанар", en: "Quality", ko: "품질" } as L,
+      text: {
+        mn: "Хэлний сургалтаас бичиг баримт хүртэл үр дүнд чиглэнэ.",
+        en: "From language classes to paperwork, we focus on results.",
+        ko: "어학 수업부터 서류 준비까지 결과에 집중합니다.",
+      } as L,
+    },
+  ],
+};
+
+export const directions = {
+  eyebrow: { mn: "Бидний үйлчилгээ", en: "What we do", ko: "서비스" } as L,
+  title: { mn: "5 чиглэлийн үйлчилгээ", en: "Five service areas", ko: "5가지 서비스 분야" } as L,
+  /** Хоосон бол харагдахгүй */
+  text: { mn: "", en: "", ko: "" } as L,
+  audienceLabel: { mn: "Хэнд:", en: "For:", ko: "대상:" } as L,
+  items: [
+    {
+      icon: "BookOpen",
+      title: { mn: "Солонгос хэлний сургалт", en: "Korean language courses", ko: "한국어 교육" } as L,
+      text: {
+        mn: "Анхан, дунд, ахисан түвшний анги, TOPIK шалгалтын бэлтгэл, ярианы анги",
+        en: "Beginner, intermediate and advanced classes, TOPIK preparation and conversation classes",
+        ko: "초급·중급·고급 반, TOPIK 시험 대비, 회화 반",
+      } as L,
+      audience: {
+        mn: "Хэл шинээр сурах, шалгалтад бэлдэх хүмүүс",
+        en: "New learners and those preparing for exams",
+        ko: "한국어를 새로 배우거나 시험을 준비하는 분",
+      } as L,
     },
     {
       icon: "GraduationCap",
-      title: { mn: "Солонгост суралцах", en: "Study in Korea", ko: "한국 유학" } as L,
-      text: { mn: "Хамтрагч сургуулиуд руу зуучлал", en: "Placement at our partner schools", ko: "협력 학교로의 유학 연결" } as L,
+      title: { mn: "Сургалт зуучлал", en: "Study placement", ko: "유학 연계" } as L,
+      text: {
+        mn: "Хэлний сургалт, коллеж, их сургууль, магистрын хөтөлбөр сонгох, бүртгүүлэх",
+        en: "Choosing and enrolling in language programs, colleges, universities and master's programs",
+        ko: "어학연수·전문대·대학교·대학원 과정 선택 및 지원",
+      } as L,
+      audience: {
+        mn: "Солонгост сурахаар төлөвлөж буй сурагчид",
+        en: "Students planning to study in Korea",
+        ko: "한국 유학을 계획 중인 학생",
+      } as L,
     },
     {
-      icon: "Smartphone",
+      icon: "IdCard",
+      title: { mn: "Бичиг баримт, виз", en: "Documents and visas", ko: "서류·비자" } as L,
+      text: {
+        mn: "Материал бүрдүүлэх, орчуулга, визийн өргөдөл, ярилцлагад бэлтгэх",
+        en: "Preparing documents, translation, visa applications and interview preparation",
+        ko: "서류 준비, 번역, 비자 신청, 인터뷰 준비",
+      } as L,
+      audience: {
+        mn: "Сурах, ажиллах, аялах зорилготой хүн бүр",
+        en: "Anyone going to study, work or travel",
+        ko: "유학·취업·여행을 계획하는 모든 분",
+      } as L,
+    },
+    {
+      icon: "Handshake",
+      title: { mn: "Амьдралын зөвлөгөө, дэмжлэг", en: "Living advice and support", ko: "생활 상담·지원" } as L,
+      text: {
+        mn: "Солонгост амьдрах соёл, хууль, орон сууц, нислэгийн дараах дэмжлэг",
+        en: "Culture, law and housing in Korea, plus support after you arrive",
+        ko: "한국 생활 문화, 법률, 주거, 입국 후 지원",
+      } as L,
+      audience: {
+        mn: "Гарахад бэлдэж буй хүмүүс",
+        en: "People getting ready to leave",
+        ko: "출국을 준비하는 분",
+      } as L,
+    },
+    {
+      icon: "CardSim",
       title: { mn: "Солонгост ашиглах дугаар", en: "Korean phone number", ko: "한국 휴대폰 번호" } as L,
-      text: { mn: "Очихоосоо өмнө холбоотой байх", en: "Be connected before you arrive", ko: "도착 전부터 연결" } as L,
-      isNew: true,
+      text: {
+        mn: "Солонгост очихоос өмнө тэндхийн утасны дугаар, SIM карт авах, идэвхжүүлэхэд туслах",
+        en: "Get and activate a Korean number and SIM card before you arrive",
+        ko: "한국 도착 전 현지 번호·SIM 카드 개통 지원",
+      } as L,
+      audience: {
+        mn: "Солонгост сурахаар төлөвлөж буй сурагчид бүх хүмүүст",
+        en: "Students and everyone heading to Korea",
+        ko: "한국으로 가는 학생 및 모든 분",
+      } as L,
     },
   ],
 };
@@ -119,45 +238,71 @@ export const coursesCopy = {
   } as L,
 };
 
-export const why = {
-  eyebrow: { mn: "Бидний зарчим", en: "Our principles", ko: "우리의 원칙" } as L,
-  title: { mn: "Яагаад GuideOne?", en: "Why GuideOne?", ko: "왜 GuideOne인가요?" } as L,
-  text: {
-    mn: "Бидний үйлчилгээг чиглүүлдэг дөрвөн зарчим.",
-    en: "Four principles that guide how we work.",
-    ko: "우리가 일하는 방식을 이끄는 네 가지 원칙.",
-  } as L,
+export const advantages = {
+  eyebrow: { mn: "Яагаад GuideOne?", en: "Why GuideOne?", ko: "왜 GuideOne인가요?" } as L,
+  title: { mn: "Бидний давуу тал", en: "Our strengths", ko: "우리의 강점" } as L,
+  /** Хоосон бол харагдахгүй */
+  text: { mn: "", en: "", ko: "" } as L,
+  /** tone: "light" — ногоон, "dark" — хар ногоон дугуй */
   items: [
     {
-      title: { mn: "Зорилгод суурилсан", en: "Goal-driven", ko: "목표 중심" } as L,
+      icon: "Layers",
+      tone: "light",
+      title: { mn: "Нэг цэгт бүх үйлчилгээ", en: "All services in one place", ko: "원스톱 서비스" } as L,
       text: {
-        mn: "Таны зорилгоос эхэлж, түүнд хүрэх замыг хамтдаа төлөвлөнө.",
-        en: "We start from your goal and plan the path to it together.",
-        ko: "당신의 목표에서 출발해 그곳까지의 길을 함께 계획합니다.",
+        mn: "Хэл, сургууль, визийг өөр өөр газраас хайх шаардлагагүй.",
+        en: "No need to look for language classes, schools and visas in different places.",
+        ko: "어학, 학교, 비자를 따로 알아볼 필요가 없습니다.",
       } as L,
     },
     {
-      title: { mn: "Ойлгомжтой зөвлөгөө", en: "Clear guidance", ko: "명확한 상담" } as L,
+      icon: "Route",
+      tone: "dark",
+      title: { mn: "Хувь хүнд тохирсон төлөвлөгөө", en: "A plan made for you", ko: "맞춤형 계획" } as L,
       text: {
-        mn: "Шийдвэр гаргахад хэрэгтэй мэдээллийг энгийн, тодорхой тайлбарлана.",
-        en: "We explain what you need to decide — simply and clearly.",
-        ko: "결정에 필요한 정보를 쉽고 분명하게 설명합니다.",
+        mn: "Хэлний түвшин, зорилго, төсөвт тань таарсан замаа хамтдаа гаргана.",
+        en: "Together we map out a path that fits your level, goals and budget.",
+        ko: "언어 수준, 목표, 예산에 맞는 길을 함께 설계합니다.",
       } as L,
     },
     {
-      title: { mn: "Солонгос руу чиглэсэн", en: "Focused on Korea", ko: "한국에 집중" } as L,
+      icon: "RefreshCw",
+      tone: "light",
+      title: { mn: "Цаг үеийн мэдээлэл", en: "Up-to-date information", ko: "최신 정보" } as L,
       text: {
-        mn: "Хэл, суралцах, амьдрах — бүгд Солонгост чиглэсэн хэрэгцээнд төвлөрнө.",
-        en: "Language, study and daily life — everything centers on Korea.",
-        ko: "언어, 유학, 생활 — 모든 것이 한국을 향합니다.",
+        mn: "Виз, сургалт, ажил эрхлэлтийн журам өөрчлөгдөх бүрт шинэчилж байдаг.",
+        en: "We update our guidance whenever visa, study or employment rules change.",
+        ko: "비자·학업·취업 규정이 바뀔 때마다 정보를 업데이트합니다.",
       } as L,
     },
     {
-      title: { mn: "Нэг дороос", en: "All in one place", ko: "한 곳에서" } as L,
+      icon: "FileText",
+      tone: "dark",
+      title: { mn: "Ил тод гэрээ, зардал", en: "Clear contracts and costs", ko: "투명한 계약과 비용" } as L,
       text: {
-        mn: "Хэлний сургалтаас холболтын үйлчилгээ хүртэл нэг газраас.",
-        en: "From language classes to connectivity — one place to go.",
-        ko: "어학 수업부터 통신 서비스까지 한 곳에서.",
+        mn: "Үнэ, хугацаа, үүргийг гэрээнд тодорхой зааж, далд төлбөр авахгүй.",
+        en: "Prices, timelines and responsibilities are set out in the contract, with no hidden fees.",
+        ko: "가격, 기간, 책임을 계약서에 명시하며 숨은 비용이 없습니다.",
+      } as L,
+    },
+    {
+      icon: "PlaneTakeoff",
+      tone: "light",
+      title: { mn: "Гарсны дараах дэмжлэг", en: "Support after departure", ko: "출국 후 지원" } as L,
+      text: {
+        mn: "Солонгост очсоны дараа ч холбоотой байж, асуудал гарвал тусална.",
+        en: "We stay in touch after you arrive in Korea and help if any issue comes up.",
+        ko: "한국 도착 후에도 연락을 유지하며 문제가 생기면 도와드립니다.",
+      } as L,
+    },
+    {
+      icon: "UsersRound",
+      tone: "dark",
+      title: { mn: "Шинэ үеийн баг", en: "A modern team", ko: "새로운 세대의 팀" } as L,
+      text: {
+        mn: "Үйлчлүүлэгч бүрт анхаарал хандуулж, цахим хэлбэрээр шуурхай харилцана.",
+        en: "We give every client personal attention and respond quickly online.",
+        ko: "모든 고객에게 세심하게 집중하며 온라인으로 신속하게 소통합니다.",
       } as L,
     },
   ],
@@ -207,6 +352,59 @@ export const partnersCopy = {
     ko: "협력 학교 목록은 곧 공개됩니다. 현재 목록은 GuideOne 상담사에게 문의해 주세요.",
   } as L,
   cta: { mn: "Жагсаалт асуух", en: "Ask for the list", ko: "목록 문의하기" } as L,
+};
+
+export const serviceProcess = {
+  eyebrow: { mn: "Алхам алхмаар", en: "Step by step", ko: "단계별로" } as L,
+  title: { mn: "Үйлчилгээ авах үйл явц", en: "How it works", ko: "서비스 이용 절차" } as L,
+  text: {
+    mn: "Анхны уулзалтаас Солонгост очих хүртэл таван алхамтай.",
+    en: "Five steps from our first meeting to your arrival in Korea.",
+    ko: "첫 상담부터 한국 도착까지 다섯 단계로 진행됩니다.",
+  } as L,
+  /** Алхмуудын дараалал — админаас нэмж, хасаж, эрэмбэлнэ */
+  steps: [
+    {
+      title: { mn: "Уулзалт, зөвлөгөө", en: "Meeting and advice", ko: "상담" } as L,
+      text: {
+        mn: "Таны зорилго, хэлний түвшин, боломжийг тодорхойлно.",
+        en: "We clarify your goals, language level and options.",
+        ko: "목표, 언어 수준, 가능성을 파악합니다.",
+      } as L,
+    },
+    {
+      title: { mn: "Төлөвлөгөө гаргах", en: "Making a plan", ko: "계획 수립" } as L,
+      text: {
+        mn: "Сургууль сонголт, хугацаа, зардлыг тохиролцоно.",
+        en: "We agree on the school, timeline and costs.",
+        ko: "학교 선택, 일정, 비용을 함께 정합니다.",
+      } as L,
+    },
+    {
+      title: { mn: "Хэлний бэлтгэл", en: "Language preparation", ko: "어학 준비" } as L,
+      text: {
+        mn: "Шаардлагатай түвшинд хүртэл сургалтад сууж, шалгалтад бэлдэнэ.",
+        en: "You take classes until you reach the required level and prepare for exams.",
+        ko: "필요한 수준까지 수업을 듣고 시험을 준비합니다.",
+      } as L,
+    },
+    {
+      title: { mn: "Бичиг баримт, виз", en: "Documents and visa", ko: "서류·비자" } as L,
+      text: {
+        mn: "Материал бүрдүүлж, бүртгэл болон визийн өргөдлийг хамтдаа гүйцэтгэнэ.",
+        en: "We prepare documents and complete the application and visa process together.",
+        ko: "서류를 준비하고 지원 및 비자 신청을 함께 진행합니다.",
+      } as L,
+    },
+    {
+      title: { mn: "Солонгос явах болон дараах дэмжлэг", en: "Departure and ongoing support", ko: "출국 및 사후 지원" } as L,
+      text: {
+        mn: "Солонгос явахаас өмнөх зааварчилгаа өгөөд, очсоны дараа ч холбоотой байна.",
+        en: "We brief you before departure and stay in touch after you arrive.",
+        ko: "출국 전 안내를 드리고 도착 후에도 계속 연락합니다.",
+      } as L,
+    },
+  ],
 };
 
 export const process = {
@@ -274,6 +472,7 @@ export const contactCopy = {
   cta: { mn: "Холбогдох", en: "Get in touch", ko: "연락하기" } as L,
   callUs: { mn: "Утсаар залгах", en: "Call us", ko: "전화 문의" } as L,
   visit: { mn: "Манай оффис", en: "Visit us", ko: "오시는 길" } as L,
+  hours: { mn: "Ажлын цаг", en: "Opening hours", ko: "운영 시간" } as L,
   formText: {
     mn: "Мэдээллээ үлдээвэл манай зөвлөх тантай эргэн холбогдоно.",
     en: "Leave your details and an advisor will get back to you.",

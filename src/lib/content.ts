@@ -3,6 +3,7 @@ import { cache } from "react";
 import type { Localized } from "@/i18n/config";
 import { courses as staticCourses, type Course } from "@/data/courses";
 import { faqs as staticFaqs, type Faq } from "@/data/faq";
+import { languageSchools as staticLanguageSchools, type LanguageSchool } from "@/data/languageSchools";
 import { partners as staticPartners, type Partner, type PartnerRow as PartnerDetailRow } from "@/data/partners";
 import { defaultSections, type Sections } from "@/data/sections";
 import { services as staticServices, upcomingServices as staticUpcoming, type Service, type ServiceDetail, type UpcomingService } from "@/data/services";
@@ -20,6 +21,7 @@ export type Content = Omit<Sections, "site"> & {
   courses: Course[];
   faqs: Faq[];
   partners: Partner[];
+  languageSchools: LanguageSchool[];
   teachers: Teacher[];
   testimonials: Testimonial[];
   services: Service[];
@@ -45,6 +47,20 @@ type PartnerRow = {
   intakes?: PartnerDetailRow[];
   costs?: PartnerDetailRow[];
   majors?: Localized<string[]>;
+};
+type LanguageSchoolRow = {
+  id: number;
+  name: L;
+  city: L | null;
+  visa_type: "e_visa" | "regular" | null;
+  tuition: L | null;
+  headline: L | null;
+  highlights: Localized<string[]>;
+  scholarships: PartnerDetailRow[];
+  description: L | null;
+  logo_url: string | null;
+  image_url: string | null;
+  url: string | null;
 };
 type TeacherRow = {
   name: string;
@@ -73,6 +89,8 @@ type ApiContent = {
   courses: CourseRow[];
   faqs: FaqRow[];
   partners: PartnerRow[];
+  /** 09_language_schools.sql ажиллаагүй бол ирэхгүй */
+  "language-schools"?: LanguageSchoolRow[];
   teachers: TeacherRow[];
   testimonials: TestimonialRow[];
   services: ServiceRow[];
@@ -97,6 +115,7 @@ export const getContent = cache(async (): Promise<Content> => {
       courses: staticCourses,
       faqs: staticFaqs,
       partners: staticPartners,
+      languageSchools: staticLanguageSchools,
       teachers: staticTeachers,
       testimonials: staticTestimonials,
       services: staticServices,
@@ -133,6 +152,20 @@ export const getContent = cache(async (): Promise<Content> => {
       intakes: p.intakes ?? [],
       costs: p.costs ?? [],
       majors: p.majors ?? emptyList,
+    })),
+    languageSchools: (data["language-schools"] ?? []).map((s) => ({
+      id: s.id,
+      name: s.name,
+      city: opt(s.city),
+      visaType: opt(s.visa_type),
+      tuition: opt(s.tuition),
+      headline: opt(s.headline),
+      highlights: s.highlights ?? emptyList,
+      scholarships: s.scholarships ?? [],
+      description: opt(s.description),
+      logo: opt(s.logo_url),
+      image: opt(s.image_url),
+      url: opt(s.url),
     })),
     teachers: data.teachers.map((t) => ({
       name: t.name,

@@ -1,12 +1,14 @@
-import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowUpRight, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { tr, type Locale } from "@/i18n/config";
 import { mapEmbedUrl, mapLinkUrl, tel } from "@/data/site";
 import { getContent } from "@/lib/content";
 import Container from "../ui/Container";
+import { FacebookIcon } from "../ui/SocialIcons";
 import ContactForm from "./ContactForm";
 
 export default async function ContactCTA({ lang }: { lang: Locale }) {
   const { site, contactCopy: c } = await getContent();
+  const hours = tr(site.hours, lang).trim();
   return (
     <section id="contact" aria-labelledby="contact-title" className="bg-background py-24 lg:py-32">
       <Container>
@@ -63,6 +65,21 @@ export default async function ContactCTA({ lang }: { lang: Locale }) {
                       </a>
                     </li>
                   )}
+                  {site.socials.facebook && (
+                    <li>
+                      <a
+                        href={site.socials.facebook}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-3 rounded-full bg-white/10 py-2 pl-2 pr-5 font-semibold ring-1 ring-inset ring-white/15 transition hover:bg-white hover:text-primary"
+                      >
+                        <span className="grid size-9 place-items-center rounded-full bg-white/15">
+                          <FacebookIcon className="size-4" />
+                        </span>
+                        Facebook
+                      </a>
+                    </li>
+                  )}
                 </ul>
               </div>
 
@@ -74,6 +91,15 @@ export default async function ContactCTA({ lang }: { lang: Locale }) {
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/50">{tr(c.visit, lang)}</p>
                       <p className="mt-1.5 leading-relaxed text-white/90">{tr(site.address, lang)}</p>
+                      {hours && (
+                        <div className="mt-4 flex gap-2.5">
+                          <Clock className="mt-0.5 size-4 shrink-0 text-lime" aria-hidden />
+                          <div>
+                            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/50">{tr(c.hours, lang)}</p>
+                            <p className="mt-1.5 whitespace-pre-line leading-relaxed text-white/90">{hours}</p>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                   <a

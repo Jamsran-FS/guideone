@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { tr, type Locale } from "@/i18n/config";
 import { footerHelp, footerNavigation, localHref, tel } from "@/data/site";
 import { ui } from "@/data/home";
@@ -76,6 +76,12 @@ export default async function Footer({ lang }: { lang: Locale }) {
                   <MapPin className="mt-1 size-4 shrink-0 opacity-80" aria-hidden />
                   <span className="max-w-xs">{tr(site.address, lang)}</span>
                 </p>
+                {tr(site.hours, lang).trim() && (
+                  <p className="flex gap-2.5 text-[15px] font-medium leading-relaxed text-white/85">
+                    <Clock className="mt-1 size-4 shrink-0 opacity-80" aria-hidden />
+                    <span className="max-w-xs whitespace-pre-line">{tr(site.hours, lang)}</span>
+                  </p>
+                )}
               </address>
             </div>
 

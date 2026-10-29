@@ -1,12 +1,13 @@
 import { notFound } from "next/navigation";
 import { hasLocale } from "@/i18n/config";
 import Hero from "@/components/home/Hero";
-import Intro from "@/components/home/Intro";
+import About from "@/components/home/About";
+import Directions from "@/components/home/Directions";
 import CourseSection from "@/components/home/CourseSection";
-import WhyGuideOne from "@/components/home/WhyGuideOne";
+import Advantages from "@/components/home/Advantages";
 import ServicesSection from "@/components/home/ServicesSection";
 import PartnerSchools from "@/components/home/PartnerSchools";
-import KoreaStudyProcess from "@/components/home/KoreaStudyProcess";
+import ServiceProcess from "@/components/home/ServiceProcess";
 import TeachersSection from "@/components/home/TeachersSection";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
 import FAQSection from "@/components/home/FAQSection";
@@ -45,12 +46,13 @@ export default async function HomePage({ params }: PageProps<"/[lang]">) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <Hero lang={lang} />
-      <Intro lang={lang} />
+      <About lang={lang} />
+      <Directions lang={lang} />
       <CourseSection lang={lang} />
-      <WhyGuideOne lang={lang} />
+      <Advantages lang={lang} />
       <ServicesSection lang={lang} />
       <PartnerSchools lang={lang} />
-      <KoreaStudyProcess lang={lang} />
+      <ServiceProcess lang={lang} />
       <TeachersSection lang={lang} />
       <TestimonialsSection lang={lang} />
       <FAQSection lang={lang} />

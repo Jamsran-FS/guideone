@@ -2,7 +2,7 @@
 
 import { ArrowDown, ArrowUp, Plus, Trash2 } from "lucide-react";
 import type { Localized } from "@/i18n/config";
-import { ImageInput, LocalizedInput, LocalizedListInput } from "./fields";
+import { IconSelect, ImageInput, LocalizedInput, LocalizedListInput } from "./fields";
 import { btn, input } from "./ui";
 
 /**
@@ -20,6 +20,15 @@ const keyLabels: Record<string, string> = {
   description: "Тайлбар",
   items: "Жагсаалт",
   steps: "Алхмууд",
+  stats: "Тоон үзүүлэлтүүд",
+  missionTitle: "Алсын хараа, эрхэм зорилго — гарчиг",
+  vision: "Алсын хараа",
+  mission: "Эрхэм зорилго",
+  valuesTitle: "Үнэт зүйлс — гарчиг",
+  values: "Үнэт зүйлс",
+  audience: "Хэнд зориулсан",
+  tone: "Дүрсний өнгө",
+  audienceLabel: "\"Хэнд:\" шошго",
   label: "Нэр",
   href: "Холбоос",
   icon: "Icon",
@@ -38,6 +47,7 @@ const keyLabels: Record<string, string> = {
   city: "Хот",
   phones: "Утаснууд",
   email: "И-мэйл",
+  hours: "Ажлын цаг",
   socials: "Сошиал холбоос",
   heroImage: "Hero зураг (гар утас)",
   heroImageFull: "Hero зураг (desktop, 1536×1024)",
@@ -81,6 +91,14 @@ export default function JsonEditor({ value, onChange, name }: { value: Json; onC
 
   if (typeof value === "string" || value === null) {
     if (name && /image/i.test(name)) return <ImageInput value={value} onChange={onChange} />;
+    if (name === "icon") return <IconSelect value={value ?? ""} onChange={onChange} />;
+    if (name === "tone")
+      return (
+        <select value={value ?? "light"} onChange={(e) => onChange(e.target.value)} className={`${input} max-w-xs`}>
+          <option value="light">Ногоон</option>
+          <option value="dark">Хар ногоон</option>
+        </select>
+      );
     const v = value ?? "";
     return v.length > 70 ? (
       <textarea value={v} rows={3} onChange={(e) => onChange(e.target.value)} className={`${input} resize-y`} />

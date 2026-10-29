@@ -9,6 +9,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "",
     ...services.map((s) => `/services/${s.slug}`),
     ...partners.filter((p) => p.id !== undefined).map((p) => `/partners/${p.id}`),
+    "/language-prep",
   ];
   return paths.flatMap((p) =>
     locales.map((l) => ({
