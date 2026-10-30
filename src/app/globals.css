@@ -86,7 +86,7 @@ html {
   scroll-padding-top: 96px;
 }
 
-/* Гүйдэг зар (NoticeBar) харагдаж байвал navbar, anchor-ийн зайг түүний өндрөөр доошлуулна */
+/* Урсдаг зар (NoticeBar) харагдаж байвал navbar, anchor-ийн зайг түүний өндрөөр доошлуулна */
 :root { --notice-h: 2.25rem; }
 html:has([data-notice-bar]) { scroll-padding-top: calc(96px + var(--notice-h)); }
 html:has([data-notice-bar]) [data-navbar] { top: var(--notice-h); }

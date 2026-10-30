@@ -7,7 +7,7 @@ import { tr, type Locale } from "@/i18n/config";
 import { isNoticeActive, type Notice } from "@/data/notices";
 
 /**
- * Сайтын хамгийн дээд талд, бүтэн өргөнөөр гүйдэг зар (fixed). Зөвхөн starts_at–ends_at хооронд харагдана —
+ * Сайтын хамгийн дээд талд, бүтэн өргөнөөр урсдаг зар (fixed). Зөвхөн starts_at–ends_at хооронд харагдана —
  * минут тутам шалгаж, хугацаа нь дуусахад хуудсыг дахин ачаалахгүйгээр алга болно.
  * Харагдаж байх үед navbar-ыг [data-notice-bar]-аар доошлуулна (globals.css).
  */

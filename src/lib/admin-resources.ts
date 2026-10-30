@@ -205,9 +205,9 @@ export const resources = {
     summary: (r) => ({ title: String(r.name ?? ""), subtitle: mn(r.context) }),
   },
   notices: {
-    title: "Гүйдэг зар",
+    title: "Урсдаг зар",
     singular: "зар",
-    description: "Сайтын хамгийн дээд талд гүйдэг зар. Зөвхөн заасан хугацаанд харагдана; дууссан зар энд түүх болж үлдэнэ.",
+    description: "Сайтын хамгийн дээд талд урсдаг зар. Зөвхөн заасан хугацаанд харагдана; дууссан зар энд түүх болж үлдэнэ.",
     fields: [
       { name: "text", label: "Зарын текст", type: "localized", help: "Нэг мөр, богино. Англи, Солонгос хоосон бол Монгол текст харагдана." },
       { name: "url", label: "Холбоос", type: "url", optional: true, help: "Зар дээр дарахад очих хуудас. Жишээ нь: /mn/language-prep эсвэл https://…" },

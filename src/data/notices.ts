@@ -1,6 +1,6 @@
 import type { Localized } from "@/i18n/config";
 
-/** Сайтын дээд талын гүйдэг зар — админ: "Гүйдэг зар" (notices хүснэгт) */
+/** Сайтын дээд талын урсдаг зар — админ: "Урсдаг зар" (notices хүснэгт) */
 export type Notice = {
   id: number;
   text: Localized;
