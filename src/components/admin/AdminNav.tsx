@@ -11,6 +11,7 @@ import {
   Languages,
   LayoutDashboard,
   LayoutGrid,
+  Megaphone,
   MessageSquareQuote,
   PanelsTopLeft,
   Phone,
@@ -42,6 +43,7 @@ const groups: { title?: string; items: { href: string; label: string; icon: Luci
     title: "Сайтын контент",
     items: [
       { href: "/admin/content", label: "Хуудасны текст", icon: PanelsTopLeft },
+      { href: "/admin/notices", label: "Гүйдэг зар", icon: Megaphone },
       { href: "/admin/contact", label: "Холбоо барих мэдээлэл", icon: Phone },
       { href: "/admin/courses", label: "Сургалт", icon: BookOpen },
       { href: "/admin/services", label: "Үйлчилгээ", icon: LayoutGrid },

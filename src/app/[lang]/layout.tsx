@@ -11,6 +11,7 @@ import { hasLocale, locales, tr } from "@/i18n/config";
 import { site } from "@/data/site";
 import { getContent } from "@/lib/content";
 import Navbar from "@/components/layout/Navbar";
+import NoticeBar from "@/components/layout/NoticeBar";
 import Footer from "@/components/layout/Footer";
 import RevealObserver from "@/components/ui/RevealObserver";
 
@@ -54,9 +55,11 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
 export default async function RootLayout({ children, params }: LayoutProps<"/[lang]">) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
+  const { notices } = await getContent();
   return (
     <html lang={lang}>
       <body className="min-h-dvh">
+        <NoticeBar notices={notices} lang={lang} />
         <Navbar lang={lang} />
         <main id="main">{children}</main>
         <Footer lang={lang} />

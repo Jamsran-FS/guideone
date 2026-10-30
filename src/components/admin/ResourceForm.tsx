@@ -104,6 +104,8 @@ function FieldInput({ field, value, onChange }: { field: Field; value: unknown; 
           Тийм
         </label>
       );
+    case "datetime":
+      return <DateTimeInput value={value as string | null} onChange={onChange} />;
     case "number":
       return <input type="number" value={Number(value ?? 0)} onChange={(e) => onChange(e.target.valueAsNumber || 0)} className={`${input} max-w-40`} />;
     case "select":
@@ -127,4 +129,22 @@ function FieldInput({ field, value, onChange }: { field: Field; value: unknown; 
         />
       );
   }
+}
+
+/** ISO (UTC) ↔ datetime-local (хөтчийн цагийн бүс) */
+function DateTimeInput({ value, onChange }: { value: string | null; onChange: (v: string | null) => void }) {
+  const local = (() => {
+    if (!value) return "";
+    const d = new Date(value);
+    return new Date(d.getTime() - d.getTimezoneOffset() * 60_000).toISOString().slice(0, 16);
+  })();
+  return (
+    <input
+      type="datetime-local"
+      required
+      value={local}
+      onChange={(e) => onChange(e.target.value ? new Date(e.target.value).toISOString() : null)}
+      className={`${input} max-w-xs`}
+    />
+  );
 }

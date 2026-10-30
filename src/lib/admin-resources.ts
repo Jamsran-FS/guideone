@@ -17,7 +17,8 @@ export type FieldType =
   | "localizedText"
   | "localizedList"
   | "details"
-  | "education";
+  | "education"
+  | "datetime";
 
 export type Field = {
   name: string;
@@ -42,6 +43,28 @@ export type ResourceConfig = {
 };
 
 const mn = (v: unknown) => (v as Localized | null)?.mn ?? "";
+
+/** Админ жагсаалтад огноо, цаг (Улаанбаатарын цагаар — сервер UTC дээр ажилладаг) */
+const ubTime = (v: unknown) =>
+  v
+    ? new Intl.DateTimeFormat("mn-MN", {
+        timeZone: "Asia/Ulaanbaatar",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      }).format(new Date(String(v)))
+    : "—";
+
+function noticeStatus(r: Row) {
+  const now = Date.now();
+  if (!r.is_published) return "Нуусан";
+  if (new Date(String(r.ends_at)).getTime() <= now) return "Дууссан";
+  if (new Date(String(r.starts_at)).getTime() > now) return "Товлосон";
+  return "Идэвхтэй";
+}
 
 const common: Field[] = [
   { name: "sort_order", label: "Эрэмбэ", type: "number", help: "Бага тоотой нь эхэнд харагдана." },
@@ -181,6 +204,19 @@ export const resources = {
     ],
     summary: (r) => ({ title: String(r.name ?? ""), subtitle: mn(r.context) }),
   },
+  notices: {
+    title: "Гүйдэг зар",
+    singular: "зар",
+    description: "Сайтын хамгийн дээд талд гүйдэг зар. Зөвхөн заасан хугацаанд харагдана; дууссан зар энд түүх болж үлдэнэ.",
+    fields: [
+      { name: "text", label: "Зарын текст", type: "localized", help: "Нэг мөр, богино. Англи, Солонгос хоосон бол Монгол текст харагдана." },
+      { name: "url", label: "Холбоос", type: "url", optional: true, help: "Зар дээр дарахад очих хуудас. Жишээ нь: /mn/language-prep эсвэл https://…" },
+      { name: "starts_at", label: "Эхлэх хугацаа", type: "datetime" },
+      { name: "ends_at", label: "Дуусах хугацаа", type: "datetime", help: "Энэ хугацаанаас хойш сайт дээр харагдахгүй." },
+      ...common,
+    ],
+    summary: (r) => ({ title: mn(r.text), subtitle: `${noticeStatus(r)} · ${ubTime(r.starts_at)} → ${ubTime(r.ends_at)}` }),
+  },
   faqs: {
     title: "Түгээмэл асуулт",
     singular: "асуулт",
@@ -222,6 +258,9 @@ export function emptyRow(config: ResourceConfig): Row {
         case "details":
         case "education":
           return [];
+        case "datetime":
+          // Шинэ зар: одооноос 7 хоног
+          return new Date(Date.now() + (f.name === "ends_at" ? 7 * 864e5 : 0)).toISOString();
         default:
           return f.optional ? null : "";
       }

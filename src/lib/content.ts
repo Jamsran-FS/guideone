@@ -7,6 +7,7 @@ import { languageSchools as staticLanguageSchools, type LanguageSchool } from "@
 import { partners as staticPartners, type Partner, type PartnerRow as PartnerDetailRow } from "@/data/partners";
 import { defaultSections, type Sections } from "@/data/sections";
 import { services as staticServices, upcomingServices as staticUpcoming, type Service, type ServiceDetail, type UpcomingService } from "@/data/services";
+import type { Notice } from "@/data/notices";
 import { site } from "@/data/site";
 import { teachers as staticTeachers, type Education, type Teacher } from "@/data/teachers";
 import { testimonials as staticTestimonials, type Testimonial } from "@/data/testimonials";
@@ -22,6 +23,7 @@ export type Content = Omit<Sections, "site"> & {
   faqs: Faq[];
   partners: Partner[];
   languageSchools: LanguageSchool[];
+  notices: Notice[];
   teachers: Teacher[];
   testimonials: Testimonial[];
   services: Service[];
@@ -62,6 +64,7 @@ type LanguageSchoolRow = {
   image_url: string | null;
   url: string | null;
 };
+type NoticeRow = { id: number; text: L; url: string | null; starts_at: string; ends_at: string };
 type TeacherRow = {
   name: string;
   image_url: string | null;
@@ -91,6 +94,8 @@ type ApiContent = {
   partners: PartnerRow[];
   /** 09_language_schools.sql ажиллаагүй бол ирэхгүй */
   "language-schools"?: LanguageSchoolRow[];
+  /** 11_notices.sql ажиллаагүй бол ирэхгүй. Хугацаа нь дууссан зар ирэхгүй. */
+  notices?: NoticeRow[];
   teachers: TeacherRow[];
   testimonials: TestimonialRow[];
   services: ServiceRow[];
@@ -116,6 +121,7 @@ export const getContent = cache(async (): Promise<Content> => {
       faqs: staticFaqs,
       partners: staticPartners,
       languageSchools: staticLanguageSchools,
+      notices: [],
       teachers: staticTeachers,
       testimonials: staticTestimonials,
       services: staticServices,
@@ -167,6 +173,7 @@ export const getContent = cache(async (): Promise<Content> => {
       image: opt(s.image_url),
       url: opt(s.url),
     })),
+    notices: (data.notices ?? []).map((n) => ({ id: n.id, text: n.text, url: opt(n.url), startsAt: n.starts_at, endsAt: n.ends_at })),
     teachers: data.teachers.map((t) => ({
       name: t.name,
       image: opt(t.image_url),

@@ -86,6 +86,17 @@ html {
   scroll-padding-top: 96px;
 }
 
+/* Гүйдэг зар (NoticeBar) харагдаж байвал navbar, anchor-ийн зайг түүний өндрөөр доошлуулна */
+:root { --notice-h: 2.25rem; }
+html:has([data-notice-bar]) { scroll-padding-top: calc(96px + var(--notice-h)); }
+html:has([data-notice-bar]) [data-navbar] { top: var(--notice-h); }
+
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+.animate-marquee { animation: marquee var(--marquee-duration, 30s) linear infinite; }
+.animate-marquee:hover { animation-play-state: paused; }
+
 body {
   background: var(--surface);
   color: var(--foreground);
@@ -148,4 +159,5 @@ body {
   .reveal-ready [data-reveal] { transition: none; }
   .reveal-ready [data-reveal]:not(.is-visible) { opacity: 1; transform: none; }
   .animate-dash { animation: none; }
+  .animate-marquee { animation: none; }
 }
